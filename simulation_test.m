@@ -10,7 +10,7 @@ clc; % clear command window
 scenario = NewFlight();
 
 % Run the simulation
-[times, queues] = simulation(scenario);
+[times] = simulation(scenario);
 
 % Graphical animation of the results
 %DrawNetwork(scenario, times, queues);
