@@ -35,13 +35,13 @@ total_revenue = 0;
 EventList = [];
 
 %Generate first business customer
-t_g = sample(t,1)
+t_g = sample(t,1,scenario)
 EventList = UpdatedEventList(EventList, NewEvent(t_g, 1));
 %Generate first leasure customer
-t_g = sample(t,2)
+t_g = sample(t,2,scenario)
 EventList = UpdatedEventList(EventList, NewEvent(t_g, 2));
 %Generate first economy customer
-t_g = sample(t,3)
+t_g = sample(t,3,scenario)
 EventList = UpdatedEventList(EventList, NewEvent(t_g, 3));
 
 times=[];
@@ -51,17 +51,17 @@ while not(isempty(EventList))
         break;
     end
     times = [times, t];
-    type = EventList(1).type;
+    type = EventList(1).passenger_segment;
     switch type
         case 1%Business
-            t_g = sample(t,1)
-            EventList = UpdatedEventList(EventList,NewEvent(t_g,1,1));
+            t_g = sample(t,1,scenario)
+            EventList = UpdatedEventList(EventList,NewEvent(t_g,1));
         case 2%Leisure
-            t_g = sample(t,2)
-            EventList = UpdatedEventList(EventList,NewEvent(t_g,1,2));
+            t_g = sample(t,2,scenario)
+            EventList = UpdatedEventList(EventList,NewEvent(t_g,2));
         case 3%Economy
-            t_g = sample(t,3)
-            EventList = UpdatedEventList(EventList,NewEvent(t_g,1,3));
+            t_g = sample(t,3,scenario)
+            EventList = UpdatedEventList(EventList,NewEvent(t_g,3));
     end
     EventList = EventList([2:end]);
 end
