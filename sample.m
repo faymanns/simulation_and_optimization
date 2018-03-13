@@ -1,10 +1,10 @@
-function t_sampled = sample(t,segment_type)
+function t_sampled = sample(t,segment_type,scenario)
 
 switch segment_type
     
     case 1      % Corresponds to Business segment
-        t_sampled = NaN;
-        while t_sampled == Nan
+            t_sampled = NaN;
+        while isnan(t_sampled)
             r = rand();
             t = t+log(r)/(scenario.MaxLAMBDA_BUSINESS);
             s = rand();
@@ -14,8 +14,8 @@ switch segment_type
         end
 
     case 2     % Corresponds to Leisure segment
-        t_sampled = Nan;
-        while t_sampled == Nan
+        t_sampled = NaN;
+        while isnan(t_sampled)
             r = rand();
             t = t+log(r)/(scenario.MaxLAMBDA_LEISURE);
             s = rand();
@@ -25,8 +25,8 @@ switch segment_type
         end
 
     case 3     % Corresponds to Economy segment
-        t_sampled = Nan;
-        while t_sampled == Nan
+        t_sampled = NaN;
+        while isnan(t_sampled)
             r = rand();
             t = t+log(r)/(scenario.MaxLAMBDA_ECONOMY);
             s = rand();
