@@ -21,6 +21,6 @@ function lambdaValue = lambdaFunctionLeisure(t)
 
 
 %% Function
-lambdaValue = (0.6/179)*t; 
+lambdaValue = (0.6/179)*abs(t); 
 
 end
