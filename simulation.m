@@ -51,11 +51,8 @@ t_g = sample(t,3,scenario);
 EventList = UpdatedEventList(EventList, NewEvent(t_g, 3));
 
 times=[];
-while not(isempty(EventList))
+while t>=0
     t = EventList(1).time;
-    if t<0
-        break;
-    end
     times = [times, t];
     type = EventList(1).passenger_segment;
     switch type
