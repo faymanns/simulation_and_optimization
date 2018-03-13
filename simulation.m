@@ -1,5 +1,5 @@
 
-function [times, queues] = QueueingSimulation1(scenario)
+function [times, queues] = simulation(scenario)
 
 % ============================================================================
 % DESCRIPTION
@@ -30,10 +30,10 @@ function [times, queues] = QueueingSimulation1(scenario)
 %
 % implement your solution here
 %
-
 t = scenario.PLANNING_HORIZON;
 total_revenue = 0;
 EventList = [];
+
 %Generate first business customer
 t_g = sample(t,1)
 EventList = UpdatedEventList(EventList, NewEvent(t_g, 1));
