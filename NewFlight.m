@@ -25,6 +25,12 @@ scenario.PLANNING_HORIZON = 179;
 scenario.MaxLAMBDA_BUSINESS = 1.2;  % resulted analytically from the functions given bla bla
 scenario.MaxLAMBDA_LEISURE = 0.6; 
 scenario.MaxLAMBDA_ECONOMY = 1.6; 
+% scenario.BusinessWeights = table([ 11;15;18;20;19;15;12;11;13;8 ],{'A';'B';'C';'D';'E';'F';'G';'H';'I';'NP'});
+% scenario.LeisureWeights = table([ 8;9;11;12;14;15;16;18;20;8 ],{'A';'B';'C';'D';'E';'F';'G';'H';'I';'NP'});
+% scenario.EconomyWeights = table([ 1;5;8;10;11;12;13;15;20;8 ],{'A';'B';'C';'D';'E';'F';'G';'H';'I';'NP'}); 
+scenario.BusinessWeights = [ 11 15 18 20 19 15 12 11 13 8 ];
+scenario.LeisureWeights = [ 8 9 11 12 14 15 16 18 20 8 ];
+scenario.EconomyWeights = [ 1 5 8 10 11 12 13 15 20 8 ];
 end
 
 
