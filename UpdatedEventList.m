@@ -42,7 +42,7 @@ upper = size(oldEventList,2) + 1;
 while (lower < upper)
 	pos = floor((lower + upper) / 2);
     curTime = oldEventList(pos).time;
-    if (newEvent.time <= curTime)
+    if (newEvent.time >= curTime)
 		upper = pos;
 	else
 		lower = pos + 1;
