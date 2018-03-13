@@ -38,44 +38,32 @@ EventList = [];
 t_g = sample_business(t, lambda, lambdamax)
 EventList = UpdatedEventList(EventList, NewEvent(t_g, 1));
 %Generate first leasure customer
-t_g = sample_business(t, lambda, lambdamax)
+t_g = sample_leisure(t, lambda, lambdamax)
 EventList = UpdatedEventList(EventList, NewEvent(t_g, 2));
 %Generate first economy customer
-t_g = sample_business(t, lambda, lambdamax)
+t_g = sample_economy(t, lambda, lambdamax)
 EventList = UpdatedEventList(EventList, NewEvent(t_g, 3));
 
 times=[];
-queues=[];
 while not(isempty(EventList))
     t = EventList(1).time;
+    if t<0
+        break;
+    end
     times = [times, t];
-    queues = [queues, q];
     type = EventList(1).type;
     switch type
         case 1%Business
-            t_g = t - log(rand())/scenario.LAMBDA;
+            t_g = sample_business(t, lambda, lambdamax)
             EventList = UpdatedEventList(EventList,NewEvent(t_g,1,1));
-            %Arrival
-            t_a = t + rand()*scenario.T0;
-            EventList = UpdatedEventList(EventList,NewEvent(t_a,1,2));
-        case 2%Arrival
-            q=q+1;
-            if q==1
-                t_d = t - scenario.MU*log(rand());
-                EventList = UpdatedEventList(EventList,NewEvent(t_d,1,3)); 
-            end
-        case 3%Depature
-            if q > 0
-                q=q-1;
-                %Depature
-                t_d = t - scenario.MU*log(rand());
-                EventList = UpdatedEventList(EventList,NewEvent(t_d,1,3));
-            end
-        case 4%Simulation end
-            break
+        case 2%Leisure
+            t_g = sample_business(t, lambda, lambdamax)
+            EventList = UpdatedEventList(EventList,NewEvent(t_g,1,2));
+        case 3%Economy
+            t_g = sample_business(t, lambda, lambdamax)
+            EventList = UpdatedEventList(EventList,NewEvent(t_g,1,3));
     end
     EventList = EventList([2:end]);
 end
-
 
 end
