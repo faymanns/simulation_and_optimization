@@ -14,12 +14,12 @@ function scenario = NewFlight()
 % RETURN VALUES
 %  
 % scenario
-% .DEMAND_DURATION  length of the demand interval (how long vehicles enter)
-% .T0               1 x 1 matrix that contains the free flow travel time
-% .LAMBDA           1 x 1 matrix that contains the external entry rate
-%
+% .PLANNING_HORIZON     planning horizon for the sale of the seat inventory
+%                       (ends on the day of departure)
+% .MaxLAMBDA_BUSINESS   maximum value for given lambda function describing business arrival rate       
+% .MaxLAMBDA_LEISURE    maximum value for given lambda function describing leisure arrival rate        
+% .MaxLAMBDA_ECONOMY    maximum value for given lambda function describing economy arrival rate
 % ============================================================================
-
 
 scenario.PLANNING_HORIZON = 179;
 scenario.MaxLAMBDA_BUSINESS = 1.2;  % resulted analytically from the functions given bla bla
