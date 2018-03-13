@@ -6,7 +6,7 @@ switch segment_type
         t_sampled = Nan;
         while t_sampled == Nan
             r = rand();
-            t = t+log(r)/1.2;
+            t = t+log(r)/(scenario.MaxLAMBDA_BUSINESS);
             s = rand();
             if s<=sin(degtorad(t))
                 t_sampled = t;
@@ -17,7 +17,7 @@ switch segment_type
         t_sampled = Nan;
         while t_sampled == Nan
             r = rand();
-            t = t+log(r)/0.6;
+            t = t+log(r)/(scenario.MaxLAMBDA_LEISURE);
             s = rand();
             if s<=t/179
                 t_sampled = t;
@@ -28,7 +28,7 @@ switch segment_type
         t_sampled = Nan;
         while t_sampled == Nan
             r = rand();
-            t = t+log(r)/1.6;
+            t = t+log(r)/(scenario.MaxLAMBDA_ECONOMY);
             s = rand();
             if s<= 0.5*(1+sin(degtorad(t+180)))
                 t_sampled = t;

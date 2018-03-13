@@ -31,8 +31,8 @@ function [times, queues] = QueueingSimulation1(scenario)
 % implement your solution here
 %
 
-t=179;
-total_revenue=0;
+t = scenario.PLANNING_HORIZON;
+total_revenue = 0;
 EventList = [];
 %Generate first business customer
 t_g = sample(t,1)
