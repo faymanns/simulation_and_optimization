@@ -3,12 +3,12 @@ function t_sampled = sample(t,segment_type)
 switch segment_type
     
     case 1      % Corresponds to Business segment
-        t_sampled = Nan;
+        t_sampled = NaN;
         while t_sampled == Nan
             r = rand();
             t = t+log(r)/(scenario.MaxLAMBDA_BUSINESS);
             s = rand();
-            if s<=sin(degtorad(t))
+            if s<=lambdaFunctionBusiness(t)/(scenario.MaxLAMBDA_BUSINESS)
                 t_sampled = t;
             end
         end
@@ -19,7 +19,7 @@ switch segment_type
             r = rand();
             t = t+log(r)/(scenario.MaxLAMBDA_LEISURE);
             s = rand();
-            if s<=t/179
+            if s<=lambdaFunctionLeisure(t)/(scenario.MaxLAMBDA_LEISURE)
                 t_sampled = t;
             end
         end
@@ -30,7 +30,7 @@ switch segment_type
             r = rand();
             t = t+log(r)/(scenario.MaxLAMBDA_ECONOMY);
             s = rand();
-            if s<= 0.5*(1+sin(degtorad(t+180)))
+            if s<= lambdaFunctionEconomy(t)/(scenario.MaxLAMBDA_ECONOMY)
                 t_sampled = t;
             end
         end

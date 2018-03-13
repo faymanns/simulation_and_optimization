@@ -21,6 +21,6 @@ function lambdaValue = lambdaFunctionBusiness(t)
 
 
 %% Function
-lambdaValue = 1.2*sin(t); 
+lambdaValue = 1.2*sin(degtorad(t)); 
 
 end

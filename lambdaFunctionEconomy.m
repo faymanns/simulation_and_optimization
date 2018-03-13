@@ -21,6 +21,6 @@ function gammaValue = lambdaFunctionEconomy(t)
 
 
 %% Function
-gammaValue = 0.8*(1+sin(t+180)); 
+gammaValue = 0.8*(1+sin(degtorad(t+180))); 
 
 end
