@@ -1,5 +1,5 @@
 
-function [times] = simulation(scenario)
+function [times, revenues, available_seats_for_fare, segments] = simulation(scenario)
 
 % ============================================================================
 % DESCRIPTION
@@ -51,29 +51,38 @@ t_g = sample(t,3,scenario);
 EventList = UpdatedEventList(EventList, NewEvent(t_g, 3));
 
 times=[];
+revenues=[];
+segments=[];
 while t>=0
     t = EventList(1).time;
     times = [times, t];
     type = EventList(1).passenger_segment;
+    segments = [segments, type];
     switch type
         case 1%Business
             t_g = sample(t, 1, scenario);
             EventList = UpdatedEventList(EventList,NewEvent(t_g, 1));
             fare = sample_fare_product(1, available_fares, scenario);
             available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
+            revenues = [revenues, scenario.revenues(fare)];
         case 2%Leisure
             t_g = sample(t, 2, scenario);
             EventList = UpdatedEventList(EventList,NewEvent(t_g, 2));
             fare = sample_fare_product(2, available_fares, scenario);
             available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
+            revenues = [revenues, scenario.revenues(fare)];
         case 3%Economy
             t_g = sample(t, 3, scenario);
             EventList = UpdatedEventList(EventList,NewEvent(t_g, 3));
             fare = sample_fare_product(3, available_fares, scenario);
             available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
+            revenues = [revenues, scenario.revenues(fare)];
         case 4%end of 21-day advantage
             available_fares = available_fares(available_fares~=4);
             available_fares = available_fares(available_fares~=8);
+    end
+    if available_seats_for_fare(fare)==0
+        available_fares = available_fares(available_fares~=fare);
     end
     EventList = EventList([2:end]);
 end

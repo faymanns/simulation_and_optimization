@@ -31,6 +31,7 @@ scenario.MaxLAMBDA_ECONOMY = 0.8;
 scenario.BusinessWeights = [ 11 15 18 20 19 15 12 11 13 8 ];
 scenario.LeisureWeights = [ 8 9 11 12 14 15 16 18 20 8 ];
 scenario.EconomyWeights = [ 1 5 8 10 11 12 13 15 20 8 ];
+scenario.revenues = [1000 900 850 750 700 650 600 500 350 0];
 end
 
 
