@@ -55,9 +55,11 @@ revenues=[];
 segments=[];
 while t>=0
     t = EventList(1).time;
-    times = [times, t];
     type = EventList(1).passenger_segment;
-    segments = [segments, type];
+    if type~=4
+        segments = [segments, type];
+        times = [times, t];
+    end
     switch type
         case 1%Business
             t_g = sample(t, 1, scenario);
