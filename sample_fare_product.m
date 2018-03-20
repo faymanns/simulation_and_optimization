@@ -2,6 +2,7 @@ function fare = sample_fare_product(passenger_segment,available_fare,scenario)
     r = rand();
     fare = 10;
     summation = 0;
+    
     if passenger_segment == 1
         for i = available_fare
             summation = summation + scenario.BusinessWeights(i);
@@ -14,6 +15,7 @@ function fare = sample_fare_product(passenger_segment,available_fare,scenario)
                 break;
             end
         end
+        
     elseif passenger_segment == 2
         for i = available_fare
             summation = summation + scenario.LeisureWeights(i);
@@ -26,6 +28,7 @@ function fare = sample_fare_product(passenger_segment,available_fare,scenario)
                 break;
             end
         end
+        
     elseif passenger_segment == 3
         for i = available_fare
             summation = summation + scenario.EconomyWeights(i);
