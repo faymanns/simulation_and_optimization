@@ -6,6 +6,10 @@ close all; % delete all figures whose handles are not hidden.
 clc; % clear command window
 
 %% Program
+
+% Set verbosity
+verbosity = false;
+
 % Set the scenario
 scenario = NewFlight();
 
@@ -25,18 +29,25 @@ total_revenue = [];
 max_number_of_no_purchase_avg = 0;
 max_number_of_no_purchase_var = 0;
 
-for i = 1:1000
+run = 0;
+while(true)
+    run = run + 1;
+    
+    if verbosity
+        fprintf('Run %d\n', run)
+    end
+    
     [times, revenues, available_seats_for_fare, segments] = simulation(scenario);
     
     if sum(available_seats_for_fare(1:(end-1)))==0
         index = find(revenues,1,'last');   %last customer that could by a ticket, afterwards no seats were left
-        number_of_couldent_purchase = [number_of_no_purchase, sum(revenues(index:end)==0)];
+        number_of_coundnt_purchase = [number_of_no_purchase, sum(revenues(index:end)==0)];
         
-%         min_number_of_couldent_purchase = min(
+%         min_number_of_coundnt_purchase = min(
         revenues = revenues(1:index);
         segments = segments(1:index);
     else
-        number_of_couldent_purchase = [number_of_no_purchase, 0];
+        number_of_coundnt_purchase = [number_of_no_purchase, 0];
     end
     
     number_of_no_purchase = [number_of_no_purchase, sum(revenues==0)];
@@ -53,7 +64,18 @@ for i = 1:1000
     number_of_seats_sold = [number_of_seats_sold, 180-sum(available_seats_for_fare(1:(end-1)))];
     total_number_of_customers = [total_number_of_customers, length(revenues)];
     total_revenue = [total_revenue, sum(revenues)];
+    
+    if verbosity
+        var(number_of_no_purchase)/run
+    end
+    
+    if var(number_of_no_purchase)/run < 0.03 && var(number_of_no_purchase)/run > 0
+        break;
+    end    
+        
 end
+
+fprintf('Number of simulation runs: %d\n', run)
 
 figure; histogram(number_of_no_purchase);
 % figure; histogram(number_of_business_customers);
@@ -65,7 +87,7 @@ figure; histogram(number_of_no_purchase);
 figure; histogram(number_of_seats_sold);
 figure; histogram(total_number_of_customers);
 figure; histogram(total_revenue);
-figure; histogram(number_of_couldent_purchase);
+figure; histogram(number_of_coundnt_purchase);
 
 
 % for i = [1 2 3 4 5 6 7 8 9]
