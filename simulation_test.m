@@ -23,16 +23,13 @@ total_revenue = [];
 
 for i = 1:1000
     [times, revenues, available_seats_for_fare, segments] = simulation(scenario);
+    
     if available_seats_for_fare==0
         index = find(revenues,1,'last');   %last customer that could by a ticket, afterwards no seats were left
-    else
-        index = length(revenues);
+        number_of_couldent_purchase = [number_of_no_purchase, sum(revenues(index:end)==0)];
+        revenues = revenues(1:index);
+        segments = segments(1:index);
     end
-    
-    number_of_couldent_purchase = [number_of_no_purchase, sum(revenues(index:end)==0)];
-    
-    revenues = revenues(1:index);
-    segments = segments(1:index);
     
     number_of_no_purchase = [number_of_no_purchase, sum(revenues==0)];
     number_of_business_customers = [number_of_business_customers, sum(segments==1)];
