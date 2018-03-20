@@ -9,7 +9,7 @@ function fare = sample_fare_product(passenger_segment,available_fare,scenario)
         threshold = 0;
         for i = available_fare
             threshold = threshold  + scenario.BusinessWeights(i)/summation;
-            if r < scenario.BusinessWeights(i)/summation
+            if r < threshold
                 fare = i;
                 break;
             end
