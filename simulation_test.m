@@ -22,6 +22,7 @@ number_of_no_purchase_business = [];
 number_of_no_purchase_leisure = [];
 number_of_no_purchase_economy = [];
 number_of_seats_sold = [];
+sold_out_times = [0;0;0;0;0;0;0;0;0;0];
 total_number_of_customers = [];
 total_revenue = [];
 
@@ -37,7 +38,7 @@ while(true)
         fprintf('Run %d\n', run)
     end
     
-    [times, revenues, available_seats_for_fare, segments] = simulation(scenario);
+    [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario);
     
     if sum(available_seats_for_fare(1:(end-1)))==0
         index = find(revenues,1,'last');   %last customer that could by a ticket, afterwards no seats were left
@@ -58,10 +59,11 @@ while(true)
     number_of_business_customers = [number_of_business_customers, sum(segments==1)];
     number_of_leisure_customers = [number_of_leisure_customers, sum(segments==2)];
     number_of_economy_customers = [number_of_economy_customers, sum(segments==3)];
-    number_of_no_purchase_business = [number_of_no_purchase_business, sum(revenues(segments==1)~=0)];
-    number_of_no_purchase_leisure = [number_of_no_purchase_leisure, sum(revenues(segments==2)~=0)];
-    number_of_no_purchase_economy = [number_of_no_purchase_economy, sum(revenues(segments==3)~=0)];
+    number_of_no_purchase_business = [number_of_no_purchase_business, sum(revenues(segments==1)==0)];
+    number_of_no_purchase_leisure = [number_of_no_purchase_leisure, sum(revenues(segments==2)==0)];
+    number_of_no_purchase_economy = [number_of_no_purchase_economy, sum(revenues(segments==3)==0)];
     number_of_seats_sold = [number_of_seats_sold, 180-sum(available_seats_for_fare(1:(end-1)))];
+    sold_out_times = [sold_out_time', sold_out_times];
     total_number_of_customers = [total_number_of_customers, length(revenues)];
     total_revenue = [total_revenue, sum(revenues)];
     
@@ -77,19 +79,30 @@ end
 
 fprintf('Number of simulation runs: %d\n', run)
 
-figure; histogram(number_of_no_purchase);
+% figure; histogram(number_of_no_purchase);
 % figure; histogram(number_of_business_customers);
 % figure; histogram(number_of_leisure_customers);
 % figure; histogram(number_of_economy_customers);
 % figure; histogram(number_of_no_purchase_business);
 % figure; histogram(number_of_no_purchase_leisure);
 % figure; histogram(number_of_no_purchase_economy);
-figure; histogram(number_of_seats_sold);
-figure; histogram(total_number_of_customers);
-figure; histogram(total_revenue);
-figure; histogram(number_of_coundnt_purchase);
 
+% figure; histogram(number_of_seats_sold);
+% figure; histogram(total_number_of_customers);
+% figure; histogram(total_revenue);
+% figure; histogram(number_of_coundnt_purchase);
 
+figure; histogram(number_of_no_purchase);
+mean(number_of_no_purchase)
+var(number_of_no_purchase)/length(number_of_no_purchase)
+BootstrapMSE(number_of_no_purchase, @mean, 100)
+for j = 1:9
+idx = find(sold_out_times(j,1:end-1)~=-1);
+figure; histogram(sold_out_times(j,idx));
+mean(sold_out_times(j,idx))
+var(sold_out_times(j,idx))/length(sold_out_times(j,idx))
+BootstrapMSE(sold_out_times(j,idx), @mean, 100)
+end
 % for i = [1 2 3 4 5 6 7 8 9]
 %     if ~( (20-sum(revenues==scenario.revenues(i))) == available_seats_for_fare(i) )
 %         fprintf('Numbers for fare %d do not add up!\n',i)

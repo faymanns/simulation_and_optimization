@@ -31,6 +31,10 @@ function [newAverage, newVariance] = UpdatedStatistics(oldAverage, oldVariance, 
 newAverage = (newData + (iteration-1)*oldAverage)/iteration;
 
 % Calculate new variance after the newly sampled random number is added
-newVariance = (iteration/(iteration+1))*(oldVariance + ((oldAverage - newData)^2)/(iteration+1));
+if iteration>1
+    newVariance = (1 - (1 / (iteration - 1))) * oldVariance + iteration * (newAverage - oldAverage)^2;
+else
+    newVariance = iteration * (newAverage - oldAverage)^2;
+end
 
 end
