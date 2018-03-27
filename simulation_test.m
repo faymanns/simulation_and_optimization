@@ -40,6 +40,8 @@ while(true)
     
     [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario);
     
+    total_number_of_economy_customers = [number_of_economy_customers, sum(segments==3)];
+    
     if sum(available_seats_for_fare(1:(end-1)))==0
         index = find(revenues,1,'last');   %last customer that could by a ticket, afterwards no seats were left
         number_of_coundnt_purchase = [number_of_no_purchase, sum(revenues(index:end)==0)];
@@ -92,17 +94,36 @@ fprintf('Number of simulation runs: %d\n', run)
 % figure; histogram(total_revenue);
 % figure; histogram(number_of_coundnt_purchase);
 
+fprintf('no purchase');
 figure; histogram(number_of_no_purchase);
 mean(number_of_no_purchase)
 var(number_of_no_purchase)/length(number_of_no_purchase)
 BootstrapMSE(number_of_no_purchase, @mean, 100)
-for j = 1:9
-idx = find(sold_out_times(j,1:end-1)~=-1);
-figure; histogram(sold_out_times(j,idx));
-mean(sold_out_times(j,idx))
-var(sold_out_times(j,idx))/length(sold_out_times(j,idx))
-BootstrapMSE(sold_out_times(j,idx), @mean, 100)
-end
+
+fprintf('Control variates no purchase');
+cov = 1/(length(number_of_no_purchase)-1)...
+    *sum((number_of_no_purchase - mean(number_of_no_purchase))...
+.*(total_number_of_economy_customers - mean(total_number_of_economy_customers)));
+variance = 1/(length(number_of_no_purchase)-1)...
+            *sum((total_number_of_economy_customers-mean(total_number_of_economy_customers)).^2);
+            %var(number_of_economy_customers);
+Z = number_of_no_purchase - cov/variance*(total_number_of_economy_customers-31.4582);
+figure; histogram(Z);
+mean(Z)
+var(Z)/length(Z)
+BootstrapMSE(Z, @mean, 100)
+
+% fprintf('sold out times');
+% for j = 1:9
+% idx = find(sold_out_times(j,1:end-1)~=-1);
+% figure; histogram(sold_out_times(j,idx));
+% mean(sold_out_times(j,idx))
+% var(sold_out_times(j,idx))/length(sold_out_times(j,idx))
+% BootstrapMSE(sold_out_times(j,idx), @mean, 100)
+% end
+
+
+
 % for i = [1 2 3 4 5 6 7 8 9]
 %     if ~( (20-sum(revenues==scenario.revenues(i))) == available_seats_for_fare(i) )
 %         fprintf('Numbers for fare %d do not add up!\n',i)
