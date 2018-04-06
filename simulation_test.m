@@ -98,12 +98,16 @@ fprintf('Number of simulation runs: %d\n', run)
 % figure; histogram(number_of_coundnt_purchase);
 
 fprintf('No purchase');
-figure; histogram(number_of_no_purchase);
+figure; histogram(number_of_no_purchase); grid on;
+title('Distribution of "No purchases"')
+xlabel('Number of "No purchases"'); ylabel('Frequency'); 
 mean(number_of_no_purchase)
 var(number_of_no_purchase)/length(number_of_no_purchase)
 BootstrapMSE(number_of_no_purchase, @mean, 100)
 
-figure; histogram(total_number_of_economy_customers);
+figure; histogram(total_number_of_economy_customers); grid on;
+title('Distribution of the total number of Economy customers')
+xlabel('Total number of Economy customers [persons]'); ylabel('Frequency'); 
 
 fprintf('Control variates no purchase');
 cov = 1/(length(number_of_no_purchase)-1)...
@@ -114,6 +118,9 @@ variance = 1/(length(number_of_no_purchase)-1)...
             %var(number_of_economy_customers);
 Z = number_of_no_purchase - cov/variance*(total_number_of_economy_customers- 144*(1-2/pi));
 figure; histogram(Z);
+title('Variance Reduction: Control Variables'); grid on;
+xlabel('Number of "No purchases"'); ylabel('Frequency'); 
+
 mean(Z)
 var(Z)/length(Z)
 BootstrapMSE(Z, @mean, 100)
