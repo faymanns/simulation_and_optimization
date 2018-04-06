@@ -25,6 +25,8 @@ number_of_seats_sold = [];
 sold_out_times = zeros(scenario.NUMBER_OF_PRODUCTS,1);
 
 total_number_of_customers = [];
+total_number_of_economy_customers = [];
+total_number_of_economy_customers2 = [];
 total_revenue = [];
 
 
@@ -40,8 +42,8 @@ while(true)
     end
     
     [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario);
-    
-    total_number_of_economy_customers = [number_of_economy_customers, sum(segments==3)];
+        
+    total_number_of_economy_customers = [total_number_of_economy_customers, sum(segments==3)];
     
     if sum(available_seats_for_fare(1:(end-1)))==0
         index = find(revenues,1,'last');   % last customer that could by a ticket, afterwards no seats were left
@@ -101,6 +103,8 @@ mean(number_of_no_purchase)
 var(number_of_no_purchase)/length(number_of_no_purchase)
 BootstrapMSE(number_of_no_purchase, @mean, 100)
 
+figure; histogram(total_number_of_economy_customers);
+
 fprintf('Control variates no purchase');
 cov = 1/(length(number_of_no_purchase)-1)...
     *sum((number_of_no_purchase - mean(number_of_no_purchase))...
@@ -108,7 +112,7 @@ cov = 1/(length(number_of_no_purchase)-1)...
 variance = 1/(length(number_of_no_purchase)-1)...
             *sum((total_number_of_economy_customers-mean(total_number_of_economy_customers)).^2);
             %var(number_of_economy_customers);
-Z = number_of_no_purchase - cov/variance*(total_number_of_economy_customers-31.4582);
+Z = number_of_no_purchase - cov/variance*(total_number_of_economy_customers- 144*(1-2/pi));
 figure; histogram(Z);
 mean(Z)
 var(Z)/length(Z)

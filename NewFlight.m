@@ -42,8 +42,8 @@ function scenario = NewFlight()
 %                       (in CHF)
 % ============================================================================
 
-scenario.PLANNING_HORIZON = 179;
-scenario.MaxLAMBDA_BUSINESS = 1.2;
+scenario.PLANNING_HORIZON = 180;
+scenario.MaxLAMBDA_BUSINESS = 1.2;  % resulted analytically from the functions given bla bla
 scenario.MaxLAMBDA_LEISURE = 0.6; 
 scenario.MaxLAMBDA_ECONOMY = 0.8; 
 scenario.NUMBER_OF_PRODUCTS = 10;
@@ -52,6 +52,7 @@ scenario.BusinessWeights = [ 11 15 18 20 19 15 12 11 13 8 ];
 scenario.LeisureWeights = [ 8 9 11 12 14 15 16 18 20 8 ];
 scenario.EconomyWeights = [ 1 5 8 10 11 12 13 15 20 8 ];
 scenario.revenues = [1000 900 850 750 700 650 600 500 350 0];
+scenario.CaseIndex = 2; %1 or 2 for the two cases 
 end
 
 
