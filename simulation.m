@@ -33,8 +33,8 @@ t = scenario.PLANNING_HORIZON;
 total_revenue = 0;
 EventList = [];
 
-available_fares = [1,2,3,4,5,6,7,8,9,10];
-available_seats_for_fare = [20,20,20,20,20,20,20,20,20,0];
+%available_fares = [1,2,3,4,5,6,7,8,9,10];
+%available_seats_for_fare = [20,20,20,20,20,20,20,20,20,0];
 
 %Add 21-day advantage end event
 EventList = UpdatedEventList(EventList, NewEvent(21., 4));
@@ -53,9 +53,12 @@ times=[];
 revenues=[];
 segments=[];
 sold_out_time=-ones(1,10);
-
+fare=[];
+available_fares=[];
+available_seats_for_fare=[];
+CaseIndex=scenario.CaseIndex; %Fare availability case  
 t = EventList(1).time;
-
+[available_fares,available_seats_for_fare,sold_out_time] = UpdateAvailableFares (CaseIndex,fare,available_fares,available_seats_for_fare,sold_out_time,t);
 while t>=0
     
     type = EventList(1).passenger_segment;
@@ -67,7 +70,8 @@ while t>=0
             t_g = sample(t, 1, scenario);
             EventList = UpdatedEventList(EventList,NewEvent(t_g, 1));
             fare = sample_fare_product(1, available_fares, scenario);
-            available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
+%           available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
+            [available_fares,available_seats_for_fare,sold_out_time] = UpdateAvailableFares (CaseIndex,fare,available_fares,available_seats_for_fare,sold_out_time,t);
             revenues = [revenues, scenario.revenues(fare)];
         case 2%Leisure
             segments = [segments, type];
@@ -75,7 +79,8 @@ while t>=0
             t_g = sample(t, 2, scenario);
             EventList = UpdatedEventList(EventList,NewEvent(t_g, 2));
             fare = sample_fare_product(2, available_fares, scenario);
-            available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
+%           available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
+            [available_fares,available_seats_for_fare,sold_out_time] = UpdateAvailableFares (CaseIndex,fare,available_fares,available_seats_for_fare,sold_out_time,t);
             revenues = [revenues, scenario.revenues(fare)];
         case 3%Economy
             segments = [segments, type];
@@ -83,16 +88,27 @@ while t>=0
             t_g = sample(t, 3, scenario);
             EventList = UpdatedEventList(EventList,NewEvent(t_g, 3));
             fare = sample_fare_product(3, available_fares, scenario);
-            available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
+%           available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
+            [available_fares,available_seats_for_fare,sold_out_time] = UpdateAvailableFares (CaseIndex,fare,available_fares,available_seats_for_fare,sold_out_time,t);
             revenues = [revenues, scenario.revenues(fare)];
         case 4%end of 21-day advantage
-            available_fares = available_fares(available_fares~=4);
-            available_fares = available_fares(available_fares~=8);
+            if CaseIndex==1 
+                available_fares = available_fares(available_fares~=4);
+                available_fares = available_fares(available_fares~=8);
+            else
+                current=available_fares(1); 
+                available_fares = available_fares(available_fares~=4);
+                available_fares = available_fares(available_fares~=8);
+                if length(available_fares)==1
+                    available_fares=[(current-1) available_fares]; 
+                end
+            end
+     
     end
-    if available_seats_for_fare(fare)==0 && t>=0 && type ~= 4
-        available_fares = available_fares(available_fares~=fare);
-        sold_out_time(fare)=t;
-    end
+%    if available_seats_for_fare(fare)==0 && t>=0 && type ~= 4
+%        available_fares = available_fares(available_fares~=fare);
+%        sold_out_time(fare)=t;
+%    end
     EventList = EventList([2:end]);
     t = EventList(1).time;
 end
