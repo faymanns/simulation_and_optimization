@@ -103,7 +103,7 @@ while t>=0
     if available_seats_for_fare(fare)==0 && t>=0 && type ~= 4
         available_fares = available_fares(available_fares~=fare);
         sold_out_time(fare)=t;
-=======
+
         case 4%end of 21-day advantage
             if CaseIndex==1 
                 available_fares = available_fares(available_fares~=4);
@@ -116,8 +116,7 @@ while t>=0
                     available_fares=[(current-1) available_fares]; 
                 end
             end
-     
->>>>>>> ae606b8a534a3f2774e2ee02330acae5de5fc3e9
+    
     end
 %    if available_seats_for_fare(fare)==0 && t>=0 && type ~= 4
 %        available_fares = available_fares(available_fares~=fare);
