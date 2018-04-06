@@ -8,7 +8,7 @@ clc;       % clear command window
 %% Program
 
 % Set verbosity
-verbosity = true;
+verbosity = false;
 
 % Set the scenario
 scenario = NewFlight();
@@ -116,6 +116,15 @@ var(Z)/length(Z)
 BootstrapMSE(Z, @mean, 100)
 
 
+fprintf('Total revenue:')
+figure; histogram(total_revenue/10^6); grid on;
+title('Total revenue distribution'); 
+xlabel('Total revenue [millions of CHF]'); ylabel('Frequency');
+mean(total_revenue)
+var(total_revenue)/length(total_revenue)
+BootstrapMSE(total_revenue, @mean, 100)
+
+
 % fprintf('sold out times');
 % for j = 1:9
 % idx = find(sold_out_times(j,1:end-1)~=-1);
@@ -126,54 +135,54 @@ BootstrapMSE(Z, @mean, 100)
 % end
 
 
-%%Second scenario
-
-if verbosity
-    fprintf('strting second scenario')
-end
-
-scenario2 = NewFlight();
-
-scenario2.CaseIndex = 2;
-
-revenu_avg = 0;
-revenu_var = 0;
-
-run = 0;
-while(true)
-    run = run + 1;
-    
-    if verbosity
-        fprintf('Run %d\n', run);
-    end
-    
-    [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario2);
-    
-    if sum(available_seats_for_fare(1:(end-1)))==0
-        index = find(revenues,1,'last');   % last customer that could by a ticket, afterwards no seats were left
-        
-        revenues = revenues(1:index);
-        segments = segments(1:index);
-    else
-        number_of_coundnt_purchase = [number_of_no_purchase, 0];
-    end
-
-    total_revenue = [total_revenue, sum(revenues)];
-    
-    if verbosity
-        var(total_revenue)/run
-    end
-    
-    if var(total_revenue)/run < 0.3 && var(total_revenue)/run > 0
-        break;
-    end    
-        
-end
-
-fprintf('Number of simulation runs: %d\n', run)
-
-fprintf('Total revenue:')
-figure; histogram(total_revenue);
-mean(total_revenue)
-var(total_revenue)/length(total_revenue)
-BootstrapMSE(total_revenue, @mean, 100)
+% %% ------------------------- Second scenario ------------------------%
+% 
+% if verbosity
+%     fprintf('strting second scenario')
+% end
+% 
+% scenario2 = NewFlight();
+% 
+% scenario2.CaseIndex = 2;
+% 
+% revenu_avg = 0;
+% revenu_var = 0;
+% 
+% run = 0;
+% while(true)
+%     run = run + 1;
+%     
+%     if verbosity
+%         fprintf('Run %d\n', run);
+%     end
+%     
+%     [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario2);
+%     
+%     if sum(available_seats_for_fare(1:(end-1)))==0
+%         index = find(revenues,1,'last');   % last customer that could by a ticket, afterwards no seats were left
+%         
+%         revenues = revenues(1:index);
+%         segments = segments(1:index);
+%     else
+%         number_of_coundnt_purchase = [number_of_no_purchase, 0];
+%     end
+% 
+%     total_revenue = [total_revenue, sum(revenues)];
+%     
+%     if verbosity
+%         var(total_revenue)/run
+%     end
+%     
+%     if var(total_revenue)/run < 0.3 && var(total_revenue)/run > 0
+%         break;
+%     end    
+%         
+% end
+% 
+% fprintf('Number of simulation runs: %d\n', run)
+% 
+% fprintf('Total revenue:')
+% figure; histogram(total_revenue);
+% mean(total_revenue)
+% var(total_revenue)/length(total_revenue)
+% BootstrapMSE(total_revenue, @mean, 100)
