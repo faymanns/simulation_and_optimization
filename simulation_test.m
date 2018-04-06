@@ -49,7 +49,6 @@ while(true)
         index = find(revenues,1,'last');   % last customer that could by a ticket, afterwards no seats were left
         number_of_coundnt_purchase = [number_of_no_purchase, sum(revenues(index:end)==0)];
         
-%         min_number_of_coundnt_purchase = min(
         revenues = revenues(1:index);
         segments = segments(1:index);
     else
@@ -147,3 +146,56 @@ BootstrapMSE(Z, @mean, 100)
 % histogram(times(segments==2), 20);
 % figure;
 % histogram(times(segments==3), 20);
+
+
+
+
+%%Second scenario
+
+if verbosity
+    fprintf('strting second scenario')
+end
+
+scenario.CaseIndex = 2;
+
+revenu_avg = 0;
+revenu_var = 0;
+
+run = 0;
+while(true)
+    run = run + 1;
+    
+    if verbosity
+        fprintf('Run %d\n', run);
+    end
+    
+    [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario);
+    
+    if sum(available_seats_for_fare(1:(end-1)))==0
+        index = find(revenues,1,'last');   % last customer that could by a ticket, afterwards no seats were left
+        
+        revenues = revenues(1:index);
+        segments = segments(1:index);
+    else
+        number_of_coundnt_purchase = [number_of_no_purchase, 0];
+    end
+
+    total_revenue = [total_revenue, sum(revenues)];
+    
+    if verbosity
+        var(total_revenue)/run
+    end
+    
+    if var(total_revenue)/run < 0.03 && var(total_revenue)/run > 0
+        break;
+    end    
+        
+end
+
+fprintf('Number of simulation runs: %d\n', run)
+
+fprintf('Total revenue:')
+figure; histogram(total_revenue);
+mean(total_revenue)
+var(total_revenue)/length(total_revenue)
+BootstrapMSE(total_revenue, @mean, 100)
