@@ -100,28 +100,7 @@ while t>=0
             end
      
     end
-    if available_seats_for_fare(fare)==0 && t>=0 && type ~= 4
-        available_fares = available_fares(available_fares~=fare);
-        sold_out_time(fare)=t;
-
-        case 4%end of 21-day advantage
-            if CaseIndex==1 
-                available_fares = available_fares(available_fares~=4);
-                available_fares = available_fares(available_fares~=8);
-            else
-                current=available_fares(1); 
-                available_fares = available_fares(available_fares~=4);
-                available_fares = available_fares(available_fares~=8);
-                if length(available_fares)==1
-                    available_fares=[(current-1) available_fares]; 
-                end
-            end
     
-    end
-%    if available_seats_for_fare(fare)==0 && t>=0 && type ~= 4
-%        available_fares = available_fares(available_fares~=fare);
-%        sold_out_time(fare)=t;
-%    end
     EventList = EventList([2:end]);
     t = EventList(1).time;
 end
