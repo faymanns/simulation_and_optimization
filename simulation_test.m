@@ -8,7 +8,7 @@ clc;       % clear command window
 %% Program
 
 % Set verbosity
-verbosity = false;
+verbosity = true;
 
 % Set the scenario
 scenario = NewFlight();
@@ -83,19 +83,7 @@ end
 
 fprintf('Number of simulation runs: %d\n', run)
 
-% figure; histogram(number_of_no_purchase);
-% figure; histogram(number_of_business_customers);
-% figure; histogram(number_of_leisure_customers);
-% figure; histogram(number_of_economy_customers);
-% figure; histogram(number_of_no_purchase_business);
-% figure; histogram(number_of_no_purchase_leisure);
-% figure; histogram(number_of_no_purchase_economy);
-
-% figure; histogram(number_of_seats_sold);
-% figure; histogram(total_number_of_customers);
-% figure; histogram(total_revenue);
-% figure; histogram(number_of_coundnt_purchase);
-
+%% Plotting results 
 fprintf('No purchase');
 figure; histogram(number_of_no_purchase); grid on;
 title('Distribution of "No purchases"')
@@ -104,9 +92,11 @@ mean(number_of_no_purchase)
 var(number_of_no_purchase)/length(number_of_no_purchase)
 BootstrapMSE(number_of_no_purchase, @mean, 100)
 
+fprintf('Total number of Economy customers');
 figure; histogram(total_number_of_economy_customers); grid on;
 title('Distribution of the total number of Economy customers')
 xlabel('Total number of Economy customers [persons]'); ylabel('Frequency'); 
+
 
 fprintf('Control variates no purchase');
 cov = 1/(length(number_of_no_purchase)-1)...
@@ -114,8 +104,9 @@ cov = 1/(length(number_of_no_purchase)-1)...
 .*(total_number_of_economy_customers - mean(total_number_of_economy_customers)));
 variance = 1/(length(number_of_no_purchase)-1)...
             *sum((total_number_of_economy_customers-mean(total_number_of_economy_customers)).^2);
-            %var(number_of_economy_customers);
 Z = number_of_no_purchase - cov/variance*(total_number_of_economy_customers- 144*(1-2/pi));
+
+
 figure; histogram(Z);
 title('Variance Reduction: Control Variates'); grid on;
 xlabel('Number of "No purchases"'); ylabel('Frequency'); 
@@ -123,6 +114,7 @@ xlabel('Number of "No purchases"'); ylabel('Frequency');
 mean(Z)
 var(Z)/length(Z)
 BootstrapMSE(Z, @mean, 100)
+
 
 % fprintf('sold out times');
 % for j = 1:9
@@ -134,29 +126,15 @@ BootstrapMSE(Z, @mean, 100)
 % end
 
 
-
-% for i = [1 2 3 4 5 6 7 8 9]
-%     if ~( (20-sum(revenues==scenario.revenues(i))) == available_seats_for_fare(i) )
-%         fprintf('Numbers for fare %d do not add up!\n',i)
-%     end
-% end
-% 
-% histogram(times(segments==1), 20);
-% figure;
-% histogram(times(segments==2), 20);
-% figure;
-% histogram(times(segments==3), 20);
-
-
-
-
 %%Second scenario
 
 if verbosity
     fprintf('strting second scenario')
 end
 
-scenario.CaseIndex = 2;
+scenario2 = NewFlight();
+
+scenario2.CaseIndex = 2;
 
 revenu_avg = 0;
 revenu_var = 0;
@@ -169,7 +147,7 @@ while(true)
         fprintf('Run %d\n', run);
     end
     
-    [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario);
+    [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario2);
     
     if sum(available_seats_for_fare(1:(end-1)))==0
         index = find(revenues,1,'last');   % last customer that could by a ticket, afterwards no seats were left
@@ -186,7 +164,7 @@ while(true)
         var(total_revenue)/run
     end
     
-    if var(total_revenue)/run < 0.03 && var(total_revenue)/run > 0
+    if var(total_revenue)/run < 0.3 && var(total_revenue)/run > 0
         break;
     end    
         
