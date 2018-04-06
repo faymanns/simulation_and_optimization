@@ -1,4 +1,4 @@
-function t_sampled = sample(t, segment_type, scenario)
+function t_sampled = sample(t, passenger_segment, scenario)
 % ============================================================================
 % DESCRIPTION
 %
@@ -11,12 +11,12 @@ function t_sampled = sample(t, segment_type, scenario)
 % ----------------------------------------------------------------------------
 % PARAMETERS
 %
-% t              current time 
-% segment_type   the type of the event; an integer number where
+% t                   current time 
+% passenger_segment   the type of the event; an integer number where
 %                           1 = BUSINESS segment
 %                           2 = LEUISURE segment
 %                           3 = ECONOMY segment
-% scenario       a single flight under study 
+% scenario            a single flight under study 
 %
 % ---------------------------------------------------------------------------
 % RETURN VALUES
@@ -25,7 +25,7 @@ function t_sampled = sample(t, segment_type, scenario)
 %                "segment_type"
 % ============================================================================
 
-switch segment_type
+switch passenger_segment
     
     case 1      % Corresponds to Business segment
         t_sampled = NaN;

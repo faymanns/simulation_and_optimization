@@ -118,7 +118,7 @@ variance = 1/(length(number_of_no_purchase)-1)...
             %var(number_of_economy_customers);
 Z = number_of_no_purchase - cov/variance*(total_number_of_economy_customers- 144*(1-2/pi));
 figure; histogram(Z);
-title('Variance Reduction: Control Variables'); grid on;
+title('Variance Reduction: Control Variates'); grid on;
 xlabel('Number of "No purchases"'); ylabel('Frequency'); 
 
 mean(Z)
