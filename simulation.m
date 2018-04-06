@@ -1,4 +1,3 @@
-
 function [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario)
 
 % ============================================================================
@@ -54,8 +53,11 @@ times=[];
 revenues=[];
 segments=[];
 sold_out_time=-ones(1,10);
+
+t = EventList(1).time;
+
 while t>=0
-    t = EventList(1).time;
+    
     type = EventList(1).passenger_segment;
 
     switch type
@@ -92,6 +94,7 @@ while t>=0
         sold_out_time(fare)=t;
     end
     EventList = EventList([2:end]);
+    t = EventList(1).time;
 end
 
 end

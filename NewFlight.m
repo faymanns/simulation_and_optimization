@@ -21,7 +21,7 @@ function scenario = NewFlight()
 % .MaxLAMBDA_ECONOMY    maximum value for given lambda function describing economy arrival rate
 % ============================================================================
 
-scenario.PLANNING_HORIZON = 179;
+scenario.PLANNING_HORIZON = 180;
 scenario.MaxLAMBDA_BUSINESS = 1.2;  % resulted analytically from the functions given bla bla
 scenario.MaxLAMBDA_LEISURE = 0.6; 
 scenario.MaxLAMBDA_ECONOMY = 0.8; 
