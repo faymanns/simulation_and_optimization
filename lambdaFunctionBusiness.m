@@ -5,7 +5,8 @@ function lambdaValue = lambdaFunctionBusiness(t)
 %
 % usage: lambdaValue = lambdaFunction(t)
 %
-% Function describing rate of the Nonhomogeneous Poisson Process over time
+% Function describing Business segment arrival rate of the Nonhomogeneous
+% Poisson Process over time.
 %
 % ----------------------------------------------------------------------------
 % PARAMETERS
@@ -21,6 +22,6 @@ function lambdaValue = lambdaFunctionBusiness(t)
 
 
 %% Function
-lambdaValue = 1.2*sin(degtorad(t)); 
+lambdaValue = 1.2*sin(degtorad(t));  
 
 end

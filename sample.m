@@ -1,9 +1,34 @@
-function t_sampled = sample(t,segment_type,scenario)
+function t_sampled = sample(t, segment_type, scenario)
+% ============================================================================
+% DESCRIPTION
+%
+% usage: t_sampled = sample(t, segment_type, scenario)
+%
+% Sampling arrival time based on the passenger segment arrival rates.
+% Given the integer for the passenger segment, it samples from 
+% a Nonhomogeneous Poisson Process over time.
+%
+% ----------------------------------------------------------------------------
+% PARAMETERS
+%
+% t              current time 
+% segment_type   the type of the event; an integer number where
+%                           1 = BUSINESS segment
+%                           2 = LEUISURE segment
+%                           3 = ECONOMY segment
+% scenario       a single flight under study 
+%
+% ---------------------------------------------------------------------------
+% RETURN VALUES
+%
+% t_sampled      sampled arrival time for a passenger from segment
+%                "segment_type"
+% ============================================================================
 
 switch segment_type
     
     case 1      % Corresponds to Business segment
-            t_sampled = NaN;
+        t_sampled = NaN;
         while isnan(t_sampled)
             r = rand();
             t = t+log(r)/(scenario.MaxLAMBDA_BUSINESS);

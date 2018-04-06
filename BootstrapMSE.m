@@ -29,14 +29,11 @@ function MSE = BootstrapMSE(data, statistic, draws)
 %            given data
 % ============================================================================
 
-
-%
-% implement your solution here
-%
 iteration = 0;
 n = length(data);
 M_r = [];
 data_stat = statistic(data);
+
 while iteration<draws
     set = [];
     i = 0;

@@ -5,7 +5,8 @@ function lambdaValue = lambdaFunctionLeisure(t)
 %
 % usage: lambdaValue = lambdaFunction(t)
 %
-% Function describing rate of the Nonhomogeneous Poisson Process over time
+% Function describing Leisure segment arrival rate of the Nonhomogeneous
+% Poisson Process over time.
 %
 % ----------------------------------------------------------------------------
 % PARAMETERS

@@ -1,9 +1,9 @@
 %% Test the implementation of simulation.m function
 
 %% clean the workspace
-clear all; %Removes all variables, functions, and MEX-files from memory, leaving the workspace empty
+clear all; % removes all variables, functions, and MEX-files from memory, leaving the workspace empty
 close all; % delete all figures whose handles are not hidden.
-clc; % clear command window
+clc;       % clear command window
 
 %% Program
 
@@ -22,20 +22,21 @@ number_of_no_purchase_business = [];
 number_of_no_purchase_leisure = [];
 number_of_no_purchase_economy = [];
 number_of_seats_sold = [];
-sold_out_times = [0;0;0;0;0;0;0;0;0;0];
+sold_out_times = zeros(scenario.NUMBER_OF_PRODUCTS,1);
+
 total_number_of_customers = [];
 total_revenue = [];
 
 
-max_number_of_no_purchase_avg = 0;
-max_number_of_no_purchase_var = 0;
+max_number_of_no_purchase_avg = 0;      % mean value of the max number of no purchases
+max_number_of_no_purchase_var = 0;      % variance of the max number of no purchases
 
 run = 0;
 while(true)
     run = run + 1;
     
     if verbosity
-        fprintf('Run %d\n', run)
+        fprintf('Run %d\n', run);
     end
     
     [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario);
@@ -43,7 +44,7 @@ while(true)
     total_number_of_economy_customers = [number_of_economy_customers, sum(segments==3)];
     
     if sum(available_seats_for_fare(1:(end-1)))==0
-        index = find(revenues,1,'last');   %last customer that could by a ticket, afterwards no seats were left
+        index = find(revenues,1,'last');   % last customer that could by a ticket, afterwards no seats were left
         number_of_coundnt_purchase = [number_of_no_purchase, sum(revenues(index:end)==0)];
         
 %         min_number_of_coundnt_purchase = min(
@@ -94,7 +95,7 @@ fprintf('Number of simulation runs: %d\n', run)
 % figure; histogram(total_revenue);
 % figure; histogram(number_of_coundnt_purchase);
 
-fprintf('no purchase');
+fprintf('No purchase');
 figure; histogram(number_of_no_purchase);
 mean(number_of_no_purchase)
 var(number_of_no_purchase)/length(number_of_no_purchase)

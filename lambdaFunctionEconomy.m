@@ -5,8 +5,9 @@ function gammaValue = lambdaFunctionEconomy(t)
 %
 % usage: gammaValue = lambdaFunction(t)
 %
-% Function describing rate of the Nonhomogeneous Poisson Process over time
-%
+% Function describing Economy segment arrival rate of the Nonhomogeneous
+% Poisson Process over time.
+% 
 % ----------------------------------------------------------------------------
 % PARAMETERS
 %
