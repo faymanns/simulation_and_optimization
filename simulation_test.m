@@ -149,9 +149,18 @@ fprintf('Total revenue:')
 figure; histogram(total_revenue/10^6); grid on;
 title('Total revenue distribution'); 
 xlabel('Total revenue [millions of CHF]'); ylabel('Frequency');
-mean(total_revenue)
-var(total_revenue)/length(total_revenue)
-BootstrapMSE(total_revenue, @mean, 100)
+mean_total_revenue = mean(total_revenue)/10^6
+MSE_total_revenue = var(total_revenue)/length(total_revenue)/10^6
+bootMSE_total_revenue = BootstrapMSE(total_revenue, @mean, 100)/10^6
+hold on;
+ylim=get(gca,'ylim');
+l1 = line([mean_total_revenue mean_total_revenue], ylim,'Color','r','LineWidth',2.0);
+l2 = line([mean_total_revenue+MSE_total_revenue mean_total_revenue+MSE_total_revenue], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
+l3 = line([mean_total_revenue-bootMSE_total_revenue mean_total_revenue-bootMSE_total_revenue], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
+l4 = line([prctile(total_revenue/10^6,5) prctile(total_revenue/10^6,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+line([prctile(total_revenue/10^6,95) prctile(total_revenue/10^6,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+hold off;
+legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE', '5 and 95 percentile')
 saveas(gcf,sprintf('total_revenue_scenario%i.png',scenario.CaseIndex));
 
 % plot for stopping cirteria
