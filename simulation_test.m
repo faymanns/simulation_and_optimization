@@ -101,12 +101,13 @@ xlabel('Number of "No purchases"'); ylabel('Frequency');
 mean(number_of_no_purchase)
 var(number_of_no_purchase)/length(number_of_no_purchase)
 BootstrapMSE(number_of_no_purchase, @mean, 100)
+saveas(gcf,sprintf('no_purchase_scenario%i.png',scenario.CaseIndex));
 
 fprintf('Total number of Economy customers');
 figure; histogram(total_number_of_economy_customers); grid on;
 title('Distribution of the total number of Economy customers')
 xlabel('Total number of Economy customers [persons]'); ylabel('Frequency'); 
-
+saveas(gcf,sprintf('number_of_economy_customers_scenario%i.png',scenario.CaseIndex));
 
 fprintf('Control variates no purchase');
 cov = 1/(length(number_of_no_purchase)-1)...
@@ -120,6 +121,7 @@ Z = number_of_no_purchase - cov/variance*(total_number_of_economy_customers- 144
 figure; histogram(Z);
 title('Variance Reduction: Control Variates'); grid on;
 xlabel('Number of "No purchases"'); ylabel('Frequency'); 
+saveas(gcf,sprintf('variance_reduction_scenario%i.png',scenario.CaseIndex));
 
 mean(Z)
 var(Z)/length(Z)
@@ -132,6 +134,7 @@ xlabel('Total revenue [millions of CHF]'); ylabel('Frequency');
 mean(total_revenue)
 var(total_revenue)/length(total_revenue)
 BootstrapMSE(total_revenue, @mean, 100)
+saveas(gcf,sprintf('total_revenue_scenario%i.png',scenario.CaseIndex));
 
 % plot for stopping cirteria
 figure;
@@ -145,14 +148,13 @@ ylabel('number of no purchase');
 h = legend('mean no purchase', 'std of mean no purchase');
 set(h, 'Box', 'off');
 set(h, 'Location', 'best');
-
-
+saveas(gcf,sprintf('stopping_criteria_scenario%i.png',scenario.CaseIndex));
 
 %Joined Graph for variance reduction (Z and Y=No of no purchases) 
 figure; 
-histogram(number_of_no_purchase);
+joinedh = histogram(number_of_no_purchase);
 hold on;
-histogram(Z);
+histogram(Z, 'BinEdges', joinedh.BinEdges);
 hold off;
 grid on;
 xlabel('');
@@ -160,7 +162,7 @@ ylabel('Frequency');
 h = legend('Y = # of no purchase', 'Variable Z');
 set(h, 'Box', 'off');
 set(h, 'Location', 'best');
-
+saveas(gcf,sprintf('variance_reduction_combined_scenario%i.png',scenario.CaseIndex));
 
 % fprintf('sold out times');
 % for j = 1:9
@@ -170,56 +172,3 @@ set(h, 'Location', 'best');
 % var(sold_out_times(j,idx))/length(sold_out_times(j,idx))
 % BootstrapMSE(sold_out_times(j,idx), @mean, 100)
 % end
-
-
-% %% ------------------------- Second scenario ------------------------%
-% 
-% if verbosity
-%     fprintf('strting second scenario')
-% end
-% 
-% scenario2 = NewFlight();
-% 
-% scenario2.CaseIndex = 2;
-% 
-% revenu_avg = 0;
-% revenu_var = 0;
-% 
-% run = 0;
-% while(true)
-%     run = run + 1;
-%     
-%     if verbosity
-%         fprintf('Run %d\n', run);
-%     end
-%     
-%     [times, revenues, available_seats_for_fare, segments, sold_out_time] = simulation(scenario2);
-%     
-%     if sum(available_seats_for_fare(1:(end-1)))==0
-%         index = find(revenues,1,'last');   % last customer that could by a ticket, afterwards no seats were left
-%         
-%         revenues = revenues(1:index);
-%         segments = segments(1:index);
-%     else
-%         number_of_coundnt_purchase = [number_of_no_purchase, 0];
-%     end
-% 
-%     total_revenue = [total_revenue, sum(revenues)];
-%     
-%     if verbosity
-%         var(total_revenue)/run
-%     end
-%     
-%     if var(total_revenue)/run < 0.3 && var(total_revenue)/run > 0
-%         break;
-%     end    
-%         
-% end
-% 
-% fprintf('Number of simulation runs: %d\n', run)
-% 
-% fprintf('Total revenue:')
-% figure; histogram(total_revenue);
-% mean(total_revenue)
-% var(total_revenue)/length(total_revenue)
-% BootstrapMSE(total_revenue, @mean, 100)
