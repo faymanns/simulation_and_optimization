@@ -85,7 +85,7 @@ while(true)
         no_purchase_avg        
     end
     
-    if var(number_of_no_purchase)/run < 0.5 && var(number_of_no_purchase)/run > 0
+    if var(number_of_no_purchase)/run < 0.5 && var(number_of_no_purchase)/run > 0 && run >10
         break;
     end    
         
