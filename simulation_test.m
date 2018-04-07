@@ -32,6 +32,10 @@ total_revenue = [];
 
 max_number_of_no_purchase_avg = 0;      % mean value of the max number of no purchases
 max_number_of_no_purchase_var = 0;      % variance of the max number of no purchases
+no_purchase_avg = 0;
+no_purchase_var = 0;
+list_no_purchase_avg = [];
+list_no_purchase_var = [];
 
 run = 0;
 while(true)
@@ -58,7 +62,10 @@ while(true)
     number_of_no_purchase = [number_of_no_purchase, sum(revenues==0)];
     
     max_number_of_no_purchase = max(number_of_no_purchase); % [persons] maximum length of the number_of_no_purchase in this simulation run
-    [max_number_of_no_purchase_avg, max_number_of_no_purchase_var] = UpdatedStatistics(max_number_of_no_purchase_avg, max_number_of_no_purchase_var, max_number_of_no_purchase, i);
+    [max_number_of_no_purchase_avg, max_number_of_no_purchase_var] = UpdatedStatistics(max_number_of_no_purchase_avg, max_number_of_no_purchase_var, max_number_of_no_purchase, run);
+    [no_purchase_avg, no_purchase_var] = UpdatedStatistics(no_purchase_avg, no_purchase_var, number_of_no_purchase(end), run);
+    list_no_purchase_avg = [list_no_purchase_avg, no_purchase_avg];
+    list_no_purchase_var = [list_no_purchase_var, no_purchase_var];
     
     number_of_business_customers = [number_of_business_customers, sum(segments==1)];
     number_of_leisure_customers = [number_of_leisure_customers, sum(segments==2)];
@@ -71,11 +78,14 @@ while(true)
     total_number_of_customers = [total_number_of_customers, length(revenues)];
     total_revenue = [total_revenue, sum(revenues)];
     
+    
+    
     if verbosity
         var(number_of_no_purchase)/run
+        no_purchase_avg        
     end
     
-    if var(number_of_no_purchase)/run < 0.03 && var(number_of_no_purchase)/run > 0
+    if var(number_of_no_purchase)/run < 0.5 && var(number_of_no_purchase)/run > 0
         break;
     end    
         
@@ -124,6 +134,18 @@ mean(total_revenue)
 var(total_revenue)/length(total_revenue)
 BootstrapMSE(total_revenue, @mean, 100)
 
+% plot for stopping cirteria
+figure;
+plot(list_no_purchase_avg);
+hold on;
+plot(list_no_purchase_var(2:end)./[2:run]);
+hold off;
+grid on;
+xlabel('simulation run');
+ylabel('number of no purchase');
+h = legend('mean no purchase', 'std of mean no purchase');
+set(h, 'Box', 'off');
+set(h, 'Location', 'best');
 
 % fprintf('sold out times');
 % for j = 1:9
