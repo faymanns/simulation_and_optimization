@@ -98,9 +98,18 @@ fprintf('No purchase');
 figure; histogram(number_of_no_purchase); grid on;
 title('Distribution of "No purchases"')
 xlabel('Number of "No purchases"'); ylabel('Frequency'); 
-mean(number_of_no_purchase)
-var(number_of_no_purchase)/length(number_of_no_purchase)
-BootstrapMSE(number_of_no_purchase, @mean, 100)
+mean_no_purchase = mean(number_of_no_purchase)
+MSE_no_purchase = var(number_of_no_purchase)/length(number_of_no_purchase)
+bootMSE_no_purchase = BootstrapMSE(number_of_no_purchase, @mean, 100)
+hold on;
+ylim=get(gca,'ylim');
+l1 = line([mean_no_purchase mean_no_purchase], ylim,'Color','r','LineWidth',2.0);
+l2 = line([mean_no_purchase+MSE_no_purchase mean_no_purchase+MSE_no_purchase], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
+l3 = line([mean_no_purchase-bootMSE_no_purchase mean_no_purchase-bootMSE_no_purchase], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
+l4 = line([prctile(number_of_no_purchase,5) prctile(number_of_no_purchase,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+line([prctile(number_of_no_purchase,95) prctile(number_of_no_purchase,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+hold off;
+legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE','5 and 95 percentile')
 saveas(gcf,sprintf('no_purchase_scenario%i.png',scenario.CaseIndex));
 
 fprintf('Total number of Economy customers');
@@ -123,9 +132,18 @@ title('Variance Reduction: Control Variates'); grid on;
 xlabel('Number of "No purchases"'); ylabel('Frequency'); 
 saveas(gcf,sprintf('variance_reduction_scenario%i.png',scenario.CaseIndex));
 
-mean(Z)
-var(Z)/length(Z)
-BootstrapMSE(Z, @mean, 100)
+mean_Z = mean(Z)
+MSE_Z = var(Z)/length(Z)
+bootMSE_Z = BootstrapMSE(Z, @mean, 100)
+hold on;
+ylim=get(gca,'ylim');
+l1 = line([mean_Z mean_Z], ylim,'Color','r','LineWidth',2.0);
+l2 = line([mean_Z+MSE_Z mean_Z+MSE_Z], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
+l3 = line([mean_Z-bootMSE_Z mean_Z-bootMSE_Z], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
+l4 = line([prctile(Z,5) prctile(Z,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+line([prctile(Z,95) prctile(Z,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+hold off;
+legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE', '5 and 95 percentile')
 
 fprintf('Total revenue:')
 figure; histogram(total_revenue/10^6); grid on;
