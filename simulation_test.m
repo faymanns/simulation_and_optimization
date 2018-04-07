@@ -125,7 +125,6 @@ mean(Z)
 var(Z)/length(Z)
 BootstrapMSE(Z, @mean, 100)
 
-
 fprintf('Total revenue:')
 figure; histogram(total_revenue/10^6); grid on;
 title('Total revenue distribution'); 
@@ -146,6 +145,22 @@ ylabel('number of no purchase');
 h = legend('mean no purchase', 'std of mean no purchase');
 set(h, 'Box', 'off');
 set(h, 'Location', 'best');
+
+
+
+%Joined Graph for variance reduction (Z and Y=No of no purchases) 
+figure; 
+histogram(number_of_no_purchase);
+hold on;
+histogram(Z);
+hold off;
+grid on;
+xlabel('');
+ylabel('Frequency');
+h = legend('Y = # of no purchase', 'Variable Z');
+set(h, 'Box', 'off');
+set(h, 'Location', 'best');
+
 
 % fprintf('sold out times');
 % for j = 1:9
