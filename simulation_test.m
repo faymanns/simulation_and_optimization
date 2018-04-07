@@ -149,9 +149,9 @@ fprintf('Total revenue:')
 figure; histogram(total_revenue/10^6); grid on;
 title('Total revenue distribution'); 
 xlabel('Total revenue [millions of CHF]'); ylabel('Frequency');
-mean_total_revenue = mean(total_revenue)/10^6
-MSE_total_revenue = var(total_revenue)/length(total_revenue)/10^6
-bootMSE_total_revenue = BootstrapMSE(total_revenue, @mean, 100)/10^6
+mean_total_revenue = mean(total_revenue/10^6)
+MSE_total_revenue = var(total_revenue/10^6)/length(total_revenue)
+bootMSE_total_revenue = BootstrapMSE(total_revenue/10^6, @mean, 100)
 hold on;
 ylim=get(gca,'ylim');
 l1 = line([mean_total_revenue mean_total_revenue], ylim,'Color','r','LineWidth',2.0);
