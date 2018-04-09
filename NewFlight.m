@@ -40,14 +40,15 @@ function scenario = NewFlight()
 %                       Economy segment for each fare
 % .revenues             vector containing the revenue for each fare product
 %                       (in CHF)
+% .scenario.CaseIndex   Index of case-scenario examined 1 or 2 
 % ============================================================================
 
 scenario.PLANNING_HORIZON = 180;
-scenario.MaxLAMBDA_BUSINESS = 1.2;  % resulted analytically from the functions given bla bla
+% Maximum values of lambda resulted analytically from the given functions 
+scenario.MaxLAMBDA_BUSINESS = 1.2;  
 scenario.MaxLAMBDA_LEISURE = 0.6; 
 scenario.MaxLAMBDA_ECONOMY = 0.8; 
 scenario.NUMBER_OF_PRODUCTS = 10;
-
 scenario.BusinessWeights = [ 11 15 18 20 19 15 12 11 13 8 ];
 scenario.LeisureWeights = [ 8 9 11 12 14 15 16 18 20 8 ];
 scenario.EconomyWeights = [ 1 5 8 10 11 12 13 15 20 8 ];

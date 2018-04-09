@@ -25,9 +25,6 @@ t = scenario.PLANNING_HORIZON;   % starting simulation from the first day of sal
 EventList = [];                  % create an empty events' list
 total_revenue = 0;               % the sum of the revenues for all the fares sold
 
-%available_fares = [1,2,3,4,5,6,7,8,9,10];
-%available_seats_for_fare = [20,20,20,20,20,20,20,20,20,0];
-
 % Add 21-day advantage end event because products D and H are not offered
 % after t = 21 [days]
 EventList = UpdatedEventList(EventList, NewEvent(21., 4));
@@ -63,7 +60,6 @@ while t>=0
             t_g = sample(t, 1, scenario);
             EventList = UpdatedEventList(EventList,NewEvent(t_g, 1));
             fare = sample_fare_product(1, available_fares, scenario);
-%           available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
             [available_fares,available_seats_for_fare,sold_out_time] = UpdateAvailableFares (CaseIndex,fare,available_fares,available_seats_for_fare,sold_out_time,t);
             revenues = [revenues, scenario.revenues(fare)];
             
@@ -73,7 +69,6 @@ while t>=0
             t_g = sample(t, 2, scenario);
             EventList = UpdatedEventList(EventList,NewEvent(t_g, 2));
             fare = sample_fare_product(2, available_fares, scenario);
-%           available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
             [available_fares,available_seats_for_fare,sold_out_time] = UpdateAvailableFares (CaseIndex,fare,available_fares,available_seats_for_fare,sold_out_time,t);
             revenues = [revenues, scenario.revenues(fare)];
             
@@ -83,7 +78,6 @@ while t>=0
             t_g = sample(t, 3, scenario);
             EventList = UpdatedEventList(EventList,NewEvent(t_g, 3));
             fare = sample_fare_product(3, available_fares, scenario);
-%           available_seats_for_fare(fare) = available_seats_for_fare(fare) - 1;
             [available_fares,available_seats_for_fare,sold_out_time] = UpdateAvailableFares (CaseIndex,fare,available_fares,available_seats_for_fare,sold_out_time,t);
             revenues = [revenues, scenario.revenues(fare)];
         case 4%end of 21-day advantage

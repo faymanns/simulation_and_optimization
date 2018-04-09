@@ -7,6 +7,14 @@ clc;       % clear command window
 
 %% Program
 
+%For running the two different cases (1st and second scenario) change
+%equivalenlty the scenario.CaseIndex (1 or 2) in the function NewFlight.m 
+%and run the simulation_test.m 
+%1 : All products available from the beggining of the test, limit=20/fare
+%2 : Only one fare available each time until it reaches its limit, starting 
+%from H, G, ..., A  
+
+
 % Set verbosity
 verbosity = false;
 

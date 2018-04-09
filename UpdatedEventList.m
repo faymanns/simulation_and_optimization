@@ -6,7 +6,7 @@ function newEventList = UpdatedEventList(oldEventList, newEvent)
 %
 % usage: newEventList = UpdatedEventList(oldEventList, newEvent)
 %
-% Inserts "newEvent" into "oldEventList" (preserving an ascending time-ordering)
+% Inserts "newEvent" into "oldEventList" (preserving an descending time-ordering)
 % and returns the updated "newEventList". Note that "oldEventList" stays unchanged!
 %
 % ----------------------------------------------------------------------------
