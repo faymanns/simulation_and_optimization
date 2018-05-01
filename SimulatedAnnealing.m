@@ -52,9 +52,11 @@ function [solutions, values, temperatures] = SimulatedAnnealing(problem)
 %
 % Implement your own solution here.
 %
-solutions = problem.INITIAL_SOLUTION;
-updated = true;
-values = problem.OBJECTIVE_FUNCTION(solutions(end,:),problem);
+
+
+
+solutions = [problem.INITIAL_SCENARIO];
+values = [problem.OBJECTIVE_FUNCTION(problem.INITIAL_SCENARIO)];
 
 m=1:problem.M;
 temperatures = -problem.D./(log(problem.P0 + (problem.Pf-problem.P0)/problem.M*m));
@@ -63,8 +65,8 @@ temperatures = -problem.D./(log(problem.P0 + (problem.Pf-problem.P0)/problem.M*m
 for i = 1:problem.M
 T = temperatures(i);
 for j = 1:problem.K
-    neighbour = GenerateNewCitySequence(solutions(end,:), problem);
-    Q = problem.OBJECTIVE_FUNCTION(neighbour,problem);
+    neighbour = generate_neighbor(solutions(end));
+    Q = problem.OBJECTIVE_FUNCTION(neighbour);
     if Q < values(end)
         solutions = [solutions,neighbour];
         values = [values, Q];
@@ -75,6 +77,5 @@ for j = 1:problem.K
 end
 end
 
-dummy = 0;
 end
 
