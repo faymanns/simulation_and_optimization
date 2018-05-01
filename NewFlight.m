@@ -54,9 +54,11 @@ scenario.LeisureWeights = [ 8 9 11 12 14 15 16 18 20 8 ];
 scenario.EconomyWeights = [ 1 5 8 10 11 12 13 15 20 8 ];
 scenario.revenues = [1000 900 850 750 700 650 600 500 350 0];
 scenario.CaseIndex = 2; %1 or 2 for the two cases
-scenario.booking_limits = 20*ones(1,9);
-scenario.availability_start = 179*ones(1,9);
-scenario.availability_stop = zeros(1,9);
+
+% Decision variables 
+scenario.booking_limits = [20*ones(1,9), 0];
+scenario.availability_start = 180*ones(1,10);
+scenario.availability_stop = zeros(1,10);
 end
 
 

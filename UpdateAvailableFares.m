@@ -1,40 +1,34 @@
-function [available_fares,available_seats_for_fare,sold_out_time] = UpdateAvailableFares (CaseIndex,fare,available_fares,available_seats_for_fare,sold_out_time,t)
+function [available_fares,available_seats_for_fare,sold_out_time] = UpdateAvailableFares (fare,available_fares,available_seats_for_fare,sold_out_time,t,scenario)
 
-    switch CaseIndex 
-        case 1 
-            if isempty(available_fares)
-                %All fare products available from t=179 to t=0 
-                %Booking limit = 20 for every product 
-                available_seats_for_fare = [20,20,20,20,20,20,20,20,20,0];
-                available_fares = [1,2,3,4,5,6,7,8,9,10];
-            else
-                available_seats_for_fare(fare)=available_seats_for_fare(fare)-1;
-                if available_seats_for_fare(fare)==0 && t>=0 
-                    available_fares = available_fares(available_fares~=fare);
-                    sold_out_time(fare)=t;
-                end
-            end
-                      
-        case 2 
-            %Only 1 product available every time available until it reaches its
-            %limit starting from I, H, ... A 
-            %Booking limit = 20 for every product 
-            if isempty(available_fares)
-                index=9;
-                available_seats_for_fare = [20,20,20,20,20,20,20,20,20,0];
-                available_fares = [index,10];
-            else
-                available_seats_for_fare(fare)=available_seats_for_fare(fare)-1;
-                if available_seats_for_fare(fare)==0 && t>=0 
-                    available_fares = available_fares(available_fares~=fare);
-                    sold_out_time(fare)=t;
-                    if fare>1
-                        available_fares=[(fare-1) available_fares];
-                    end
-                end
-            end
+if isempty(available_fares)
+    % Booking limit for every product is defined by the generated scenario 
+    available_seats_for_fare = scenario.booking_limits;
+                
+    % Initial set with the available fares
+    for fare_index=1:(scenario.NUMBER_OF_PRODUCTS)
+        if ( t<=scenario.availability_start(fare_index) && t>=scenario.availability_stop(fare_index) )
+            available_fares = [ available_fares, fare_index];
+        end
     end
     
+else
+    available_seats_for_fare(fare)=available_seats_for_fare(fare)-1; % reduces over one from the number of the available seats for this fare
+    % check if there are still available seats for this fare
+    if ( available_seats_for_fare(fare)==0 && t>=0 )
+        available_fares = available_fares(available_fares~=fare);
+        sold_out_time(fare)=t;
+    end
+    
+    % update the list with the available fares based on the booking
+    % intervals (from those that haven't sold out)
+    for fare_index=1:(scenario.NUMBER_OF_PRODUCTS-1)
+        if ( t<=scenario.availability_start(fare_index) && t>=scenario.availability_stop(fare_index) )
+            available_fares = [available_fares, fare_index];
+            available_fares = sort(available_fares);
+        end
+    end
+end
+
 end
 
         
