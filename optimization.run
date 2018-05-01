@@ -1,0 +1,12 @@
+#!/bin/bash
+#SBATCH -p debug
+#SBATCH --workdir /home/aymanns/simulation_and_optimization
+#SBATCH --nodes 1
+#SBATCH --ntasks 1
+#SBATCH --cpus-per-task 1
+#SBATCH --mem 128000
+#SBATCH --time 01:00:00
+module load matlab
+echo STARTING at `date`
+matlab -nodesktop -nodisplay -r "optimization_test"
+echo FINISHED at `date`

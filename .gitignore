@@ -2,4 +2,8 @@ OptSim_GroupProject_4.pdf
 **.png
 **~
 
+#Mac
 **.DS_Store
+
+#slurm output files
+**.out
