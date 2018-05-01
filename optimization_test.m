@@ -1,15 +1,18 @@
 function optimization_test()
 
+warn = warning ('off','all');
+poolobj = gcp('nocreate');
+if isempty(poolobj)
+    parpool;
+end
+pctRunOnAll warning('off','all')
+
 clear all;
 close all;
 clc;
 
 number_of_fares = 9;
 
-% problem.INITIAL_LIMITS = 20*ones(1,number_of_fares);
-% problem.INITIAL_AVAILABILITY = zeros(2,number_of_fares);
-% problem.INITIAL_AVAILABILITY(1,:) = 180*ones(1,number_of_fares);
-% problem.INITIAL_AVAILABILITY(2,:) = zeros(1,number_of_fares);
 problem.INITIAL_SCENARIO = NewFlight();
 
 problem.OBJECTIVE_FUNCTION = @revenue_objective_function;
