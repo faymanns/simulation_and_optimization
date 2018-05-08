@@ -13,9 +13,9 @@ end
 
 %Change booking limits of 2 random fares by a random value [0,10] (add it to the 1st,
 %sustract from the 2nd) - no change of the duration and starting date 
-dur=ceil(10*rand());
-bookingLimits(rand1)=max(bookingLimits(rand1)-dur,0);
-bookingLimits(rand2)=min(bookingLimits(rand2)+dur,180);
+dur=ceil(min(bookingLimits(rand1),180-bookingLimits(rand2))*rand());
+bookingLimits(rand1)=bookingLimits(rand1)-dur;
+bookingLimits(rand2)=bookingLimits(rand2)+dur;
 scenario.booking_limits=bookingLimits;
 
 end
