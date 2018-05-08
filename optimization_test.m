@@ -11,22 +11,39 @@ clear all;
 close all;
 clc;
 
-number_of_fares = 9;
 
 problem.INITIAL_SCENARIO = NewFlight();
 
 problem.OBJECTIVE_FUNCTION = @revenue_objective_function;
 
-
-problem.M = 10;
-problem.K = 50;
-problem.D = 0.5;
-problem.P0 = 0.99;
-problem.Pf = 0.01;
-
-[solutions, values, temperatures] = SimulatedAnnealing(problem);
-
+%% Local search
 [solutions, values] = local_search(problem);
+solutions(end).booking_limits
+solutions(end).availability_start
+solutions(end).availability_stop
+plot_solution(solutions(end),'local_search_optimal_solution.pdf');
+
+figure();
+plot(values);
+xlabel('Iteration');
+ylabel('Objective function');
+saveas(gcf,'local_search_values.pdf')
+
+
+% %% Simulated Annealing
+% problem.M = 10;
+% problem.K = 50;
+% problem.D = 0.5;
+% problem.P0 = 0.99;
+% problem.Pf = 0.01;
+% 
+% 
+% [solutions, values, temperatures] = SimulatedAnnealing(problem);
+% 
+% figure();
+% plot(values);
+% xlabel('Iteration');
+% ylabel('Objective function');
 
 
 end
