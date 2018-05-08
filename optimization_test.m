@@ -24,6 +24,9 @@ for i = 1:length(solutions)
     solutions(end).availability_start
     solutions(end).availability_stop
 end
+
+save('local_search','solutions','values');
+
 plot_solution(solutions(end),'local_search_optimal_solution.pdf');
 
 figure();
@@ -43,6 +46,8 @@ saveas(gcf,'local_search_values.pdf')
 % 
 % [solutions, values, temperatures] = SimulatedAnnealing(problem);
 % 
+% save('simulated_annealing','solutions','values','temperatures');
+%
 % figure();
 % plot(values);
 % xlabel('Iteration');
