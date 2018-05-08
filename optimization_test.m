@@ -18,9 +18,12 @@ problem.OBJECTIVE_FUNCTION = @revenue_objective_function;
 
 %% Local search
 [solutions, values] = local_search(problem);
-solutions(end).booking_limits
-solutions(end).availability_start
-solutions(end).availability_stop
+for i = 1:length(solutions)
+    fprintf(['Solution ',num2str(i)]);
+    solutions(end).booking_limits
+    solutions(end).availability_start
+    solutions(end).availability_stop
+end
 plot_solution(solutions(end),'local_search_optimal_solution.pdf');
 
 figure();

@@ -10,6 +10,9 @@ for i = 1:n
     area(x(:,i),height(i)*ones(2,1));
     xlim([0 solution.PLANNING_HORIZON]);
     ylim([0 max(height)+1]);
+    t = text(sum(x(:,i))/2,max(height)/2,num2str(height(i)));
+    t.Color = 'r';
+    t.FontSize = 12;
     set(gca, 'XDir','reverse');
 end
 saveas(gcf,save_path);
