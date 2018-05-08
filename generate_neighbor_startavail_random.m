@@ -1,4 +1,4 @@
-function scenario = generate_neighbors2(scenario, avg_available_seats_for_fare, avg_sold_out_time)
+function scenario = generate_neighbor_startavail_random(scenario, avg_available_seats_for_fare, avg_sold_out_time)
 
 %Change starting dates
 %Randomly choose a product and move its starting point

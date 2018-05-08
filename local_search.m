@@ -10,6 +10,6 @@ function [solutions, values] = local_search(problem)
             values = [values, Q];
             solutions = [solutions, scenario];
         end
-        scenario = generate_neighbor(solutions(end), avg_available_seats_for_fare, avg_sold_out_time);
+        scenario = generate_neighbor_random(solutions(end), avg_available_seats_for_fare, avg_sold_out_time);
     end
 end

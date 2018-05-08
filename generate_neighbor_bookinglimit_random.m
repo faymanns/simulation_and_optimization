@@ -1,4 +1,4 @@
-function scenario = generate_neighbor(scenario, avg_available_seats_for_fare, avg_sold_out_time)
+function scenario = generate_neighbor_bookinglimit_random(scenario, avg_available_seats_for_fare, avg_sold_out_time)
 %Change booking Limits 
 bookingLimits=scenario.booking_limits; 
 
