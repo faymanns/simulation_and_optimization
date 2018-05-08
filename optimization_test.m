@@ -12,9 +12,12 @@ close all;
 clc;
 
 
-problem.INITIAL_SCENARIO = NewFlight();
+no_purchase_prc_threshold = 0.1;     % constraint for the percentage of the number of no purchases
 
+
+problem.INITIAL_SCENARIO = NewFlight();
 problem.OBJECTIVE_FUNCTION = @objective_function;
+
 
 %% Local search
 [solutions, values] = local_search(problem);
