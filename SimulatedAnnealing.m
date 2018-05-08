@@ -67,10 +67,10 @@ T = temperatures(i);
 for j = 1:problem.K
     neighbour = generate_neighbor(solutions(end));
     Q = problem.OBJECTIVE_FUNCTION(neighbour);
-    if Q < values(end)
+    if Q > values(end)
         solutions = [solutions,neighbour];
         values = [values, Q];
-    elseif rand() < exp((values(end)-Q)/T)
+    elseif rand() < exp((Q-values(end))/T)
         solutions = [solutions,neighbour];
         values = [values, Q];
     end
