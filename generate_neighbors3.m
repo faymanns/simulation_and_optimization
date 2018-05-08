@@ -1,4 +1,4 @@
-function scenario = generate_neighbors3(scenario)
+function scenario = generate_neighbors3(scenario, avg_available_seats_for_fare, avg_sold_out_time)
 
 %Change ending dates
 %Randomly choose a product and move its ending point

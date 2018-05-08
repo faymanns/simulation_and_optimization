@@ -14,7 +14,7 @@ clc;
 
 problem.INITIAL_SCENARIO = NewFlight();
 
-problem.OBJECTIVE_FUNCTION = @revenue_objective_function;
+problem.OBJECTIVE_FUNCTION = @objective_function;
 
 %% Local search
 [solutions, values] = local_search(problem);
