@@ -26,14 +26,13 @@ while flag==0
 end
 %Increase up to a maximum max_inc
 max_inc = 5; % We set these values (max increase/decrease limit = seats) 
-while 1 
-    r=rand();
-    inc=ceil(max_inc*r);
-    new_limit=scenario.booking_limits(prod)+inc; 
-    if new_limit<=180
-        break
-    end
-end 
+r=rand();
+inc=ceil(max_inc*r);
+new_limit=scenario.booking_limits(prod)+inc; 
+if new_limit>180
+    new_limit=180;
+    inc=scenario.booking_limits(prod)-new_limit;
+end
 scenario.booking_limits(prod)=new_limit;
 %Decrease booking limit of less profitable product 
 
@@ -75,16 +74,16 @@ while flag==0
     end
     i=i+1;
 end
+
 %Increase duration up to a maximum max_inc 
 max_inc = 5;  % We set these values (max increase/decrease = days) 
-while 1 
-    r=rand();
-    inc=ceil(max_inc*r);
-    new_duration=durations(prod)+inc; 
-    if new_duration<=180
-        break
-    end
-end 
+r=rand();
+inc=ceil(max_inc*r);
+new_duration=durations(prod)+inc; 
+if new_duration>179
+    new_duration=179;
+    inc=new_duration-durations(prod);
+end
 
 %randomly choose whether to move starting date or ending date 
 r=rand();
