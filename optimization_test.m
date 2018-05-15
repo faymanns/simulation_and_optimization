@@ -1,4 +1,4 @@
-%function optimization_test()
+function optimization_test()
 
 warn = warning ('off','all');
 poolobj = gcp('nocreate');
@@ -50,11 +50,10 @@ problem.Pf = 0.01;
 [solutions, values, temperatures] = SimulatedAnnealing(problem);
 
 save('simulated_annealing','solutions','values','temperatures');
-badsolution = solutions(end)
 figure();
 plot(values);
 xlabel('Iteration');
 ylabel('Objective function');
 
 
-%end
+end
