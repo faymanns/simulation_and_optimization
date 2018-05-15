@@ -1,4 +1,4 @@
-function scenario = generate_solution_BL(scenario, avg_available_seats_for_fare)
+function scenario = generate_solution_BL(scenario, avg_available_seats_for_fare, avg_sold_out_time)
 %Chooses one product with good average sales and increases its limit /
 %inverse for one product with bad sales 
 %product_sale: For each prouct - average no of sold items for the previous
@@ -60,7 +60,7 @@ scenario.booking_limits(prod)=newlimit;
 
 %Select two products with high and low value of sales/availability day and 
 %increase / decrease their durations 
-durations=scenario.availability_start(1:9)-scenario.availability_stop(1:9); %time counts inversely 
+durations=scenario.availability_start(1:9)-avg_sold_out_time(1:9); %time counts inversely 
 mat2=salesrevenues./durations;
 mat2=mat2/sum(mat2);
 r=rand();
