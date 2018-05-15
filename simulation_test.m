@@ -122,135 +122,135 @@ end
 
 fprintf('Number of simulation runs: %d\n', run)
 
-%% Plotting results 
-
-%Passengers who DON'T purchase 
-
-fprintf('No purchase');
-figure; histogram(number_of_no_purchase); grid on;
-title('Distribution of "No purchases"')
-xlabel('Number of "No purchases"'); ylabel('Frequency'); 
-mean_no_purchase = mean(number_of_no_purchase)
-MSE_no_purchase = var(number_of_no_purchase)/length(number_of_no_purchase) %theoretical MSE of mean No-purchase
-bootMSE_no_purchase = BootstrapMSE(number_of_no_purchase, @mean, 100)	   %Bootstrapp MSE of mean No-purchase
-hold on;
-ylim=get(gca,'ylim');
-l1 = line([mean_no_purchase mean_no_purchase], ylim,'Color','r','LineWidth',2.0);
-l2 = line([mean_no_purchase+MSE_no_purchase mean_no_purchase+MSE_no_purchase], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
-l3 = line([mean_no_purchase-bootMSE_no_purchase mean_no_purchase-bootMSE_no_purchase], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
-l4 = line([prctile(number_of_no_purchase,5) prctile(number_of_no_purchase,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
-line([prctile(number_of_no_purchase,95) prctile(number_of_no_purchase,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
-hold off;
-legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE','5 and 95 percentile')
-saveas(gcf,sprintf('no_purchase_scenario%i.png',scenario.CaseIndex));
-
-%Passengers who CANNOT purchase (Flight sold-out) 
-
-fprintf('Could not purchase');
-figure; histogram(number_of_couldnt_purchase); grid on;
-title('Distribution of "Could not purchase"')
-xlabel('Number of "Could not purchase" customers'); ylabel('Frequency'); 
-mean_couldnt_purchase = mean(number_of_couldnt_purchase)
-MSE_couldnt_purchase = var(number_of_couldnt_purchase)/length(number_of_couldnt_purchase) %theoretical MSE of mean Couldnt-purchase
-bootMSE_couldnt_purchase = BootstrapMSE(number_of_couldnt_purchase, @mean, 100)	   %Bootstrapp MSE of mean Couldnt-purchase
-hold on;
-ylim=get(gca,'ylim');
-l1 = line([mean_couldnt_purchase mean_couldnt_purchase], ylim,'Color','r','LineWidth',2.0);
-l2 = line([mean_couldnt_purchase+MSE_couldnt_purchase mean_couldnt_purchase+MSE_couldnt_purchase], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
-l3 = line([mean_couldnt_purchase-bootMSE_couldnt_purchase mean_couldnt_purchase-bootMSE_couldnt_purchase], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
-l4 = line([prctile(number_of_couldnt_purchase,5) prctile(number_of_couldnt_purchase,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
-line([prctile(number_of_couldnt_purchase,95) prctile(number_of_couldnt_purchase,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
-hold off;
-legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE','5 and 95 percentile')
-saveas(gcf,sprintf('couldnt_purchase_scenario%i.png',scenario.CaseIndex));
-
-%Total number of economy customer "arrivals" (Used as Y in variance reduction) 
-fprintf('Total number of Economy customers');
-figure; histogram(total_number_of_economy_customers); grid on;
-title('Distribution of the total number of Economy customers')
-xlabel('Total number of Economy customers [persons]'); ylabel('Frequency'); 
-saveas(gcf,sprintf('number_of_economy_customers_scenario%i.png',scenario.CaseIndex));
-
-%Variance Reduction for average no of no-purchase customers - Control Variates method 
-fprintf('Control variates no purchase');
-cov = 1/(length(number_of_no_purchase)-1)...
-    *sum((number_of_no_purchase - mean(number_of_no_purchase))...
-.*(total_number_of_economy_customers - mean(total_number_of_economy_customers)));
-variance = 1/(length(number_of_no_purchase)-1)...
-            *sum((total_number_of_economy_customers-mean(total_number_of_economy_customers)).^2);
-Z = number_of_no_purchase - cov/variance*(total_number_of_economy_customers- 144*(1-2/pi));
-
-%Plots Variance Reduction 
-figure; histogram(Z);
-title('Variance Reduction: Control Variates'); grid on;
-xlabel('Number of "No purchases"'); ylabel('Frequency'); 
-saveas(gcf,sprintf('variance_reduction_scenario%i.png',scenario.CaseIndex));
-
-mean_Z = mean(Z)
-MSE_Z = var(Z)/length(Z)
-bootMSE_Z = BootstrapMSE(Z, @mean, 100)
-hold on;
-ylim=get(gca,'ylim');
-l1 = line([mean_Z mean_Z], ylim,'Color','r','LineWidth',2.0);
-l2 = line([mean_Z+MSE_Z mean_Z+MSE_Z], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
-l3 = line([mean_Z-bootMSE_Z mean_Z-bootMSE_Z], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
-l4 = line([prctile(Z,5) prctile(Z,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
-line([prctile(Z,95) prctile(Z,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
-hold off;
-legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE', '5 and 95 percentile')
-
-%Plot - Total Revenue 
-fprintf('Total revenue:')
-figure; histogram(total_revenue/10^6); grid on;
-title('Total revenue distribution'); 
-xlabel('Total revenue [millions of CHF]'); ylabel('Frequency');
-mean_total_revenue = mean(total_revenue)/10^6
-MSE_total_revenue = var(total_revenue/10^6)/length(total_revenue)
-bootMSE_total_revenue = BootstrapMSE(total_revenue/10^6, @mean, 100)
-hold on;
-ylim=get(gca,'ylim');
-l1 = line([mean_total_revenue mean_total_revenue], ylim,'Color','r','LineWidth',2.0);
-l2 = line([mean_total_revenue+MSE_total_revenue mean_total_revenue+MSE_total_revenue], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
-l3 = line([mean_total_revenue-bootMSE_total_revenue mean_total_revenue-bootMSE_total_revenue], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
-l4 = line([prctile(total_revenue/10^6,5) prctile(total_revenue/10^6,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
-line([prctile(total_revenue/10^6,95) prctile(total_revenue/10^6,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
-hold off;
-legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE', '5 and 95 percentile')
-saveas(gcf,sprintf('total_revenue_scenario%i.png',scenario.CaseIndex));
-
-% plot for stopping cirteria
-figure;
-plot(list_no_purchase_avg);
-hold on;
-plot(list_no_purchase_var(2:end)./[2:run]);
-hold off;
-grid on;
-xlabel('simulation run');
-ylabel('number of no purchase');
-h = legend('mean no purchase', 'std of mean no purchase');
-set(h, 'Box', 'off');
-set(h, 'Location', 'best');
-saveas(gcf,sprintf('stopping_criteria_scenario%i.png',scenario.CaseIndex));
-
-%Joined Graph for variance reduction (Z and X=No of no purchases) 
-figure; 
-joinedh = histogram(number_of_no_purchase);
-hold on;
-histogram(Z, 'BinEdges', joinedh.BinEdges);
-hold off;
-grid on;
-xlabel('');
-ylabel('Frequency');
-h = legend('X = # of no purchase', 'Variable Z');
-set(h, 'Box', 'off');
-set(h, 'Location', 'best');
-saveas(gcf,sprintf('variance_reduction_combined_scenario%i.png',scenario.CaseIndex));
-
-% fprintf('sold out times');
-% for j = 1:9
-% idx = find(sold_out_times(j,1:end-1)~=-1);
-% figure; histogram(sold_out_times(j,idx));
-% mean(sold_out_times(j,idx))
-% var(sold_out_times(j,idx))/length(sold_out_times(j,idx))
-% BootstrapMSE(sold_out_times(j,idx), @mean, 100)
-% end
+% %% Plotting results 
+% 
+% %Passengers who DON'T purchase 
+% 
+% fprintf('No purchase');
+% figure; histogram(number_of_no_purchase); grid on;
+% title('Distribution of "No purchases"')
+% xlabel('Number of "No purchases"'); ylabel('Frequency'); 
+% mean_no_purchase = mean(number_of_no_purchase)
+% MSE_no_purchase = var(number_of_no_purchase)/length(number_of_no_purchase) %theoretical MSE of mean No-purchase
+% bootMSE_no_purchase = BootstrapMSE(number_of_no_purchase, @mean, 100)	   %Bootstrapp MSE of mean No-purchase
+% hold on;
+% ylim=get(gca,'ylim');
+% l1 = line([mean_no_purchase mean_no_purchase], ylim,'Color','r','LineWidth',2.0);
+% l2 = line([mean_no_purchase+MSE_no_purchase mean_no_purchase+MSE_no_purchase], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
+% l3 = line([mean_no_purchase-bootMSE_no_purchase mean_no_purchase-bootMSE_no_purchase], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
+% l4 = line([prctile(number_of_no_purchase,5) prctile(number_of_no_purchase,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+% line([prctile(number_of_no_purchase,95) prctile(number_of_no_purchase,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+% hold off;
+% legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE','5 and 95 percentile')
+% saveas(gcf,sprintf('no_purchase_scenario%i.png',scenario.CaseIndex));
+% 
+% %Passengers who CANNOT purchase (Flight sold-out) 
+% 
+% fprintf('Could not purchase');
+% figure; histogram(number_of_couldnt_purchase); grid on;
+% title('Distribution of "Could not purchase"')
+% xlabel('Number of "Could not purchase" customers'); ylabel('Frequency'); 
+% mean_couldnt_purchase = mean(number_of_couldnt_purchase)
+% MSE_couldnt_purchase = var(number_of_couldnt_purchase)/length(number_of_couldnt_purchase) %theoretical MSE of mean Couldnt-purchase
+% bootMSE_couldnt_purchase = BootstrapMSE(number_of_couldnt_purchase, @mean, 100)	   %Bootstrapp MSE of mean Couldnt-purchase
+% hold on;
+% ylim=get(gca,'ylim');
+% l1 = line([mean_couldnt_purchase mean_couldnt_purchase], ylim,'Color','r','LineWidth',2.0);
+% l2 = line([mean_couldnt_purchase+MSE_couldnt_purchase mean_couldnt_purchase+MSE_couldnt_purchase], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
+% l3 = line([mean_couldnt_purchase-bootMSE_couldnt_purchase mean_couldnt_purchase-bootMSE_couldnt_purchase], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
+% l4 = line([prctile(number_of_couldnt_purchase,5) prctile(number_of_couldnt_purchase,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+% line([prctile(number_of_couldnt_purchase,95) prctile(number_of_couldnt_purchase,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+% hold off;
+% legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE','5 and 95 percentile')
+% saveas(gcf,sprintf('couldnt_purchase_scenario%i.png',scenario.CaseIndex));
+% 
+% %Total number of economy customer "arrivals" (Used as Y in variance reduction) 
+% fprintf('Total number of Economy customers');
+% figure; histogram(total_number_of_economy_customers); grid on;
+% title('Distribution of the total number of Economy customers')
+% xlabel('Total number of Economy customers [persons]'); ylabel('Frequency'); 
+% saveas(gcf,sprintf('number_of_economy_customers_scenario%i.png',scenario.CaseIndex));
+% 
+% %Variance Reduction for average no of no-purchase customers - Control Variates method 
+% fprintf('Control variates no purchase');
+% cov = 1/(length(number_of_no_purchase)-1)...
+%     *sum((number_of_no_purchase - mean(number_of_no_purchase))...
+% .*(total_number_of_economy_customers - mean(total_number_of_economy_customers)));
+% variance = 1/(length(number_of_no_purchase)-1)...
+%             *sum((total_number_of_economy_customers-mean(total_number_of_economy_customers)).^2);
+% Z = number_of_no_purchase - cov/variance*(total_number_of_economy_customers- 144*(1-2/pi));
+% 
+% %Plots Variance Reduction 
+% figure; histogram(Z);
+% title('Variance Reduction: Control Variates'); grid on;
+% xlabel('Number of "No purchases"'); ylabel('Frequency'); 
+% saveas(gcf,sprintf('variance_reduction_scenario%i.png',scenario.CaseIndex));
+% 
+% mean_Z = mean(Z)
+% MSE_Z = var(Z)/length(Z)
+% bootMSE_Z = BootstrapMSE(Z, @mean, 100)
+% hold on;
+% ylim=get(gca,'ylim');
+% l1 = line([mean_Z mean_Z], ylim,'Color','r','LineWidth',2.0);
+% l2 = line([mean_Z+MSE_Z mean_Z+MSE_Z], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
+% l3 = line([mean_Z-bootMSE_Z mean_Z-bootMSE_Z], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
+% l4 = line([prctile(Z,5) prctile(Z,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+% line([prctile(Z,95) prctile(Z,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+% hold off;
+% legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE', '5 and 95 percentile')
+% 
+% %Plot - Total Revenue 
+% fprintf('Total revenue:')
+% figure; histogram(total_revenue/10^6); grid on;
+% title('Total revenue distribution'); 
+% xlabel('Total revenue [millions of CHF]'); ylabel('Frequency');
+% mean_total_revenue = mean(total_revenue)/10^6
+% MSE_total_revenue = var(total_revenue/10^6)/length(total_revenue)
+% bootMSE_total_revenue = BootstrapMSE(total_revenue/10^6, @mean, 100)
+% hold on;
+% ylim=get(gca,'ylim');
+% l1 = line([mean_total_revenue mean_total_revenue], ylim,'Color','r','LineWidth',2.0);
+% l2 = line([mean_total_revenue+MSE_total_revenue mean_total_revenue+MSE_total_revenue], ylim,'Color','r','LineWidth',2.0,'LineStyle',':');
+% l3 = line([mean_total_revenue-bootMSE_total_revenue mean_total_revenue-bootMSE_total_revenue], ylim,'Color','r','LineWidth',2.0,'LineStyle','--');
+% l4 = line([prctile(total_revenue/10^6,5) prctile(total_revenue/10^6,5)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+% line([prctile(total_revenue/10^6,95) prctile(total_revenue/10^6,95)], ylim,'Color','g','LineWidth',2.0,'LineStyle','--');
+% hold off;
+% legend([l1,l2,l3,l4],'mean', 'MSE', 'bootstrap MSE', '5 and 95 percentile')
+% saveas(gcf,sprintf('total_revenue_scenario%i.png',scenario.CaseIndex));
+% 
+% % plot for stopping cirteria
+% figure;
+% plot(list_no_purchase_avg);
+% hold on;
+% plot(list_no_purchase_var(2:end)./[2:run]);
+% hold off;
+% grid on;
+% xlabel('simulation run');
+% ylabel('number of no purchase');
+% h = legend('mean no purchase', 'std of mean no purchase');
+% set(h, 'Box', 'off');
+% set(h, 'Location', 'best');
+% saveas(gcf,sprintf('stopping_criteria_scenario%i.png',scenario.CaseIndex));
+% 
+% %Joined Graph for variance reduction (Z and X=No of no purchases) 
+% figure; 
+% joinedh = histogram(number_of_no_purchase);
+% hold on;
+% histogram(Z, 'BinEdges', joinedh.BinEdges);
+% hold off;
+% grid on;
+% xlabel('');
+% ylabel('Frequency');
+% h = legend('X = # of no purchase', 'Variable Z');
+% set(h, 'Box', 'off');
+% set(h, 'Location', 'best');
+% saveas(gcf,sprintf('variance_reduction_combined_scenario%i.png',scenario.CaseIndex));
+% 
+% % fprintf('sold out times');
+% % for j = 1:9
+% % idx = find(sold_out_times(j,1:end-1)~=-1);
+% % figure; histogram(sold_out_times(j,idx));
+% % mean(sold_out_times(j,idx))
+% % var(sold_out_times(j,idx))/length(sold_out_times(j,idx))
+% % BootstrapMSE(sold_out_times(j,idx), @mean, 100)
+% % end
