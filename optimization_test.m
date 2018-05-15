@@ -31,6 +31,7 @@ problem.OBJECTIVE_FUNCTION = @objective_function;
 % save('local_search','solutions','values');
 % 
 % plot_solution(solutions(end),'local_search_optimal_solution.pdf');
+% plot_occupancy(solutions(end),'local_search_occupancy.pdf');
 % 
 % figure();
 % plot(values);
@@ -50,6 +51,9 @@ problem.Pf = 0.01;
 [solutions, values, temperatures] = SimulatedAnnealing(problem);
 
 save('simulated_annealing','solutions','values','temperatures');
+
+plot_solution(solutions(end),'simulated_annealing_optimal_solution.pdf');
+plot_occupancy(solutions(end),'simulated_annealing_occupancy.pdf');
 figure();
 plot(values);
 xlabel('Iteration');
