@@ -50,9 +50,9 @@ end
 times=[];
 revenues=[];
 segments=[];
-sold_out_time=-ones(1,10);
+sold_out_time=zeros(1,10);
 fare=[];
-available_fares = [];
+available_fares = [10];
 available_seats_for_fare=scenario.booking_limits;
 t = EventList(1).time;
 
@@ -87,18 +87,28 @@ while t>=0
             fare = sample_fare_product(3, available_fares, scenario);
             [available_fares,available_seats_for_fare,sold_out_time] = UpdateAvailableFares (fare,available_fares,available_seats_for_fare,sold_out_time,t);
             revenues = [revenues, scenario.revenues(fare)];
+            
         case 4 %start availability
+%             fprintf(['Case 4 at time ',num2str(t),'\n'])
+%             available_fares
             for product_id = 1:scenario.NUMBER_OF_PRODUCTS
-                if t == scenario.availability_start(product_id) && ~any(available_fares==product_id)
+                if t == scenario.availability_start(product_id) && ~any(available_fares==product_id) && scenario.booking_limits(product_id)~=0
                     available_fares = [available_fares, product_id];
                 end
             end
+%             fprintf('Available fares after case 4:\n')
+%             available_fares
+            
         case 5 %stop availability
+%             fprintf(['Case 5 at time ',num2str(t)])
+%             available_fares
             for product_id = 1:scenario.NUMBER_OF_PRODUCTS
                 if t == scenario.availability_stop(product_id)
                     available_fares = available_fares(available_fares~=product_id);
                 end
             end
+%             fprintf('Available fares after case 5:\n')
+%             available_fares
     end
     
     EventList = EventList([2:end]);

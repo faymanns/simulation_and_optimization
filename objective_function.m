@@ -6,12 +6,12 @@ function [total_revenue, avg_available_seats_for_fare, avg_sold_out_time, avg_nu
     all_sold_out_time = zeros(nruns,scenario.NUMBER_OF_PRODUCTS);
     number_of_no_purchase = zeros(1,nruns);
     
-    parfor i = 1:nruns
+    for i = 1:nruns
         [~, revenues, available_seats_for_fare, ~, sold_out_time] = simulation(scenario);
         total_revenues(i) = sum(revenues);
         all_available_seats_for_fare(i,:) = available_seats_for_fare;
         all_sold_out_time(i,:) = sold_out_time;
-        number_of_no_purchase = [number_of_no_purchase, sum(revenues==0)];
+        number_of_no_purchase(i) = sum(revenues==0);
     end
     
     total_revenue = sum(total_revenues)/nruns;

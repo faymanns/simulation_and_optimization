@@ -1,4 +1,4 @@
-function optimization_test()
+%function optimization_test()
 
 warn = warning ('off','all');
 poolobj = gcp('nocreate');
@@ -57,4 +57,4 @@ xlabel('Iteration');
 ylabel('Objective function');
 
 
-end
+%end
