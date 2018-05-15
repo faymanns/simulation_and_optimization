@@ -19,6 +19,7 @@ function [solutions, values] = local_search(problem)
             number_of_no_change_iteration = number_of_no_change_iteration + 1;
         end
         number_of_iteration = number_of_iteration + 1;
-        scenario = generate_neighbor_random(solutions(end), avg_available_seats_for_fare, avg_sold_out_time);
+        %scenario = generate_neighbor_random(solutions(end), avg_available_seats_for_fare, avg_sold_out_time);
+        scenario = generate_solution_BL(solutions(end), avg_available_seats_for_fare, avg_sold_out_time);
     end
 end
