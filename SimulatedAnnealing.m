@@ -56,17 +56,19 @@ function [solutions, values, temperatures] = SimulatedAnnealing(problem)
 
 
 solutions = [problem.INITIAL_SCENARIO];
-values = [problem.OBJECTIVE_FUNCTION(problem.INITIAL_SCENARIO)];
+[Q, avg_available_seats_for_fare, avg_sold_out_time] = problem.OBJECTIVE_FUNCTION(problem.INITIAL_SCENARIO);
+values = [Q];
 
 m=1:problem.M;
 temperatures = -problem.D./(log(problem.P0 + (problem.Pf-problem.P0)/problem.M*m));
 
 
+
 for i = 1:problem.M
 T = temperatures(i);
 for j = 1:problem.K
-    neighbour = generate_neighbor(solutions(end));
-    Q = problem.OBJECTIVE_FUNCTION(neighbour);
+    neighbour = generate_neighbor_random(solutions(end), avg_available_seats_for_fare, avg_sold_out_time);
+    [Q, avg_available_seats_for_fare, avg_sold_out_time] = problem.OBJECTIVE_FUNCTION(neighbour);
     if Q > values(end)
         solutions = [solutions,neighbour];
         values = [values, Q];

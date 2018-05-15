@@ -114,9 +114,17 @@ while(true)
         no_purchase_avg        
     end
     
-    if var(number_of_no_purchase)/run < 0.5 && var(number_of_no_purchase)/run > 0 && run>10
+%     if var(number_of_no_purchase)/run < 0.5 && var(number_of_no_purchase)/run > 0 && run>10
+%         break;
+%     end
+    if total_revenue(end)>180000
+        times
+        revenues
+        available_seats_for_fare
+        segments
+        sold_out_time
         break;
-    end    
+    end
         
 end
 
