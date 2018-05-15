@@ -16,7 +16,7 @@ r=rand();
 sum1=0;
 i=1;
 flag=0;
-while flag==0
+while flag==0 
     sum1=sum1+mat1(i);
     if r<=sum1
         prod=i; %The selected product
@@ -42,13 +42,13 @@ r=rand();
 sum1=0;
 i=1;
 flag=0;
-while flag==0
+while flag==0 
     sum1=sum1+mat1(i);
     if r<=sum1
         prod=i; %The selected product
         flag=1;
         newlimit=scenario.booking_limits(i)-inc; 
-        if newlimit>0
+        if newlimit>=0
             break
         end
     end
