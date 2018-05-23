@@ -21,12 +21,12 @@ problem.OBJECTIVE_FUNCTION = @objective_function;
 
 % %% Local search
 % [solutions, values] = local_search(problem);
-% for i = 1:length(solutions)
-%     fprintf(['Solution ',num2str(i)]);
-%     solutions(end).booking_limits
-%     solutions(end).availability_start
-%     solutions(end).availability_stop
-% end
+% %for i = 1:length(solutions)
+% %    fprintf(['Solution ',num2str(i)]);
+% %    solutions(end).booking_limits
+% %    solutions(end).availability_start
+% %    solutions(end).availability_stop
+% %end
 % 
 % save('local_search','solutions','values');
 % 
@@ -48,6 +48,8 @@ problem.P0 = 0.99;
 problem.Pf = 0.01;
 
 [solutions, values, temperatures] = SimulatedAnnealing(problem);
+
+save('simulated_annealing','solutions','values');
 
 plot_solution(solutions(end),'simulated_annealing_optimal_solution.pdf');
 plot_occupancy(solutions(end),'simulated_annealing_occupancy.pdf');
