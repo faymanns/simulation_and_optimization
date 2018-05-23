@@ -67,8 +67,10 @@ temperatures = [Ts(1)];
 
 for i = 1:problem.M
 T = Ts(i);
+fprintf(['M=',num2str(i),'\n'])
 for j = 1:problem.K
-    neighbour = generate_neighbor_random(solutions(end), avg_available_seats_for_fare, avg_sold_out_time);
+    %neighbour = generate_neighbor_random(solutions(end), avg_available_seats_for_fare, avg_sold_out_time);
+    neighbour = generate_solution_BL(solutions(end), avg_available_seats_for_fare, avg_sold_out_time);
     [Q, avg_available_seats_for_fare, avg_sold_out_time] = problem.OBJECTIVE_FUNCTION(neighbour);
     if Q > values(end)
         solutions = [solutions,neighbour];
