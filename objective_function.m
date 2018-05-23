@@ -19,5 +19,6 @@ function [total_revenue, avg_available_seats_for_fare, avg_sold_out_time, avg_nu
     avg_available_seats_for_fare = sum(all_available_seats_for_fare,1)/nruns;
     avg_sold_out_time = sum(all_sold_out_time,1)/nruns;
     avg_number_of_no_purchase = sum(number_of_no_purchase)/nruns;
-    total_revenue = net_total_revenue - penalty*avg_number_of_no_purchase;
+    %total_revenue = net_total_revenue - penalty*avg_number_of_no_purchase;
+    total_revenue = net_total_revenue;
 end
