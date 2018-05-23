@@ -5,7 +5,7 @@ function [solutions, values] = local_search(problem)
     [Q, avg_available_seats_for_fare, avg_sold_out_time] = problem.OBJECTIVE_FUNCTION(scenario);
     values = [Q];
     
-    max_number_of_iterations = 100;
+    max_number_of_iterations = 10000;
     number_of_iteration = 0;
     termination_theshold = 10; %If no better solution is found for termination_theshold consecutive iteration the loop stops
     number_of_no_change_iteration = 0;
