@@ -47,11 +47,28 @@ problem.D = 1100;
 problem.P0 = 0.99;
 problem.Pf = 0.01;
 
-
 [solutions, values, temperatures] = SimulatedAnnealing(problem);
 
+plot_solution(solutions(end),'simulated_annealing_optimal_solution.pdf');
+plot_occupancy(solutions(end),'simulated_annealing_occupancy.pdf');
+maxs = [values(1)];
+for i = values(2:end)
+    if maxs(end)<=i
+        maxs=[maxs,i];
+    else
+        maxs=[maxs,maxs(end)];
+    end
+end
+figure();
+yyaxis left;
+plot(values);
+hold on;
+plot(maxs);
+hold off;
+ylabel('Objective function');
+yyaxis right;
+plot(temperatures)
+xlabel('Iteration');
+legend(['x_c';'x* ';'T  ']);
+saveas(gcf,'simulated_annealing_values.pdf')
 
-end
-=======
-end
->>>>>>> 8bbe50a90e404158bdfa7fb0be1f1b7802ee6fbe
