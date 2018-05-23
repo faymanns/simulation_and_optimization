@@ -1,6 +1,7 @@
 function [total_revenue, avg_available_seats_for_fare, avg_sold_out_time, avg_number_of_no_purchase] = objective_function(scenario)
 
     nruns = 1;
+    penalty = 150; %cost to the company for every lost customer 
     total_revenues = zeros(nruns,1);
     all_available_seats_for_fare = zeros(nruns,scenario.NUMBER_OF_PRODUCTS);
     all_sold_out_time = zeros(nruns,scenario.NUMBER_OF_PRODUCTS);
@@ -14,8 +15,9 @@ function [total_revenue, avg_available_seats_for_fare, avg_sold_out_time, avg_nu
         number_of_no_purchase(i) = sum(revenues==0);
     end
     
-    total_revenue = sum(total_revenues)/nruns;
+    net_total_revenue = sum(total_revenues)/nruns;
     avg_available_seats_for_fare = sum(all_available_seats_for_fare,1)/nruns;
     avg_sold_out_time = sum(all_sold_out_time,1)/nruns;
     avg_number_of_no_purchase = sum(number_of_no_purchase)/nruns;
+    total_revenue = net_total_revenue - penalty*avg_number_of_no_purchase;
 end
