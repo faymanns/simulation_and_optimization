@@ -15,7 +15,8 @@ r=rand();
 sum1=0;
 i=1;
 flag=0;
-while flag==0 
+prod=ceil(rand()*9);
+while flag==0&&i<=9 
     sum1=sum1+mat1(i);
     if r<=sum1
         prod=i; %The selected product
@@ -23,8 +24,9 @@ while flag==0
     end
     i=i+1;
 end
+
 %Increase up to a maximum max_inc
-max_inc = 5; % We set these values (max increase/decrease limit = seats) 
+max_inc = 3; % We set these values (max increase/decrease limit = seats) 
 r=rand();
 inc=ceil(max_inc*r);
 new_limit=scenario.booking_limits(prod)+inc; 
@@ -36,19 +38,23 @@ scenario.booking_limits(prod)=new_limit;
 %Decrease booking limit of less profitable product 
 
 mat1=(1-mat1);%inverse probability
-mat1=mat1/sum(mat1);
+sum1=sum(mat1);
+mat1=mat1/sum1;
 r=rand();
 sum1=0;
 i=1;
 flag=0;
-while flag==0 
+while flag==0&&i<=9 
     sum1=sum1+mat1(i);
     if r<=sum1
         prod=i; %The selected product
         newlimit=scenario.booking_limits(i)-inc; 
         if newlimit>=0
-            scenario.booking_limits(prod)=newlimit;
             flag=1;
+            scenario.booking_limits(prod)=newlimit;
+        else
+            flag=1;
+            scenario.booking_limits(prod)=0;
         end
         sum1=0;
         i=0;
@@ -59,17 +65,18 @@ end
 %Decrease by the same amount 
 
 
-
 %Select two products with high and low value of sales/availability day and 
 %increase / decrease their durations 
 durations=scenario.availability_start(1:9)-avg_sold_out_time(1:9); %time counts inversely 
 mat2=salesrevenues./durations;
-mat2=mat2/sum(mat2);
+sum1=sum(mat2);
+mat2=mat2/sum1;
 r=rand();
 sum1=0;
 i=1;
 flag=0;
-while flag==0
+prod=ceil(rand()*9);
+while flag==0&&i<=9
     sum1=sum1+mat2(i);
     if r<=sum1
         prod=i; %The selected product
@@ -79,7 +86,7 @@ while flag==0
 end
 
 %Increase duration up to a maximum max_inc 
-max_inc = 5;  % We set these values (max increase/decrease = days) 
+max_inc = 10;  % We set these values (max increase/decrease = days) 
 r=rand();
 inc=ceil(max_inc*r);
 new_duration=durations(prod)+inc; 
@@ -112,12 +119,15 @@ r=rand();
 sum1=0;
 i=1;
 flag=0;
-while flag==0
+while flag==0&&i<=9
     sum1=sum1+mat2(i);
     if r<=sum1
         prod=i; %The selected product
         new_duration=durations(prod)-inc; 
         if new_duration>0
+            flag=1;
+        else
+            new_duration=0;
             flag=1;
         end
         sum1=0;
