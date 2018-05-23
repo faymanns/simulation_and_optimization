@@ -6,8 +6,7 @@ function scenario = generate_solution_BL(scenario, avg_available_seats_for_fare,
 
 %Change booking limits for 2 of the products 
 %Find total revenue for each product 
-%Change booking limits for 2 of the products 
-%Find total revenue for each product 
+
 salesrevenues=(scenario.booking_limits(1:9)-avg_available_seats_for_fare(1:9)).*scenario.revenues(1:9);
 %Increase booking limit of more profitable product  
 sum1=sum(salesrevenues);
@@ -46,16 +45,20 @@ while flag==0
     sum1=sum1+mat1(i);
     if r<=sum1
         prod=i; %The selected product
-        flag=1;
         newlimit=scenario.booking_limits(i)-inc; 
         if newlimit>=0
-            break
+            scenario.booking_limits(prod)=newlimit;
+            flag=1;
         end
+        sum1=0;
+        i=0;
+        r=rand();
     end
     i=i+1;
 end
 %Decrease by the same amount 
-scenario.booking_limits(prod)=newlimit;
+
+
 
 %Select two products with high and low value of sales/availability day and 
 %increase / decrease their durations 
@@ -113,11 +116,13 @@ while flag==0
     sum1=sum1+mat2(i);
     if r<=sum1
         prod=i; %The selected product
-        flag=1;
         new_duration=durations(prod)-inc; 
         if new_duration>0
-            break
+            flag=1;
         end
+        sum1=0;
+        r=rand();
+        i=0;
     end
     i=i+1;
 end
