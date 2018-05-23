@@ -11,6 +11,7 @@ function [solutions, values] = local_search(problem)
     number_of_no_change_iteration = 0;
     
     while number_of_no_change_iteration < termination_theshold && number_of_iteration < max_number_of_iterations
+        fprintf(['Iteration ',num2str(number_of_iteration),'\n']);
         [Q, avg_available_seats_for_fare, avg_sold_out_time] = problem.OBJECTIVE_FUNCTION(scenario);
         if Q > values(end)
             values = [values, Q];
