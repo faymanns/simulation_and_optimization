@@ -60,22 +60,29 @@ solutions = [problem.INITIAL_SCENARIO];
 values = [Q];
 
 m=1:problem.M;
-temperatures = -problem.D./(log(problem.P0 + (problem.Pf-problem.P0)/problem.M*m));
+Ts = -problem.D./(log(problem.P0 + (problem.Pf-problem.P0)/problem.M*m));
 
+temperatures = [Ts(1)];
 
 
 for i = 1:problem.M
-T = temperatures(i);
+T = Ts(i);
 for j = 1:problem.K
     neighbour = generate_neighbor_random(solutions(end), avg_available_seats_for_fare, avg_sold_out_time);
     [Q, avg_available_seats_for_fare, avg_sold_out_time] = problem.OBJECTIVE_FUNCTION(neighbour);
     if Q > values(end)
         solutions = [solutions,neighbour];
         values = [values, Q];
+        temperatures = [temperatures, T];
     elseif rand() < exp((Q-values(end))/T)
         solutions = [solutions,neighbour];
         values = [values, Q];
-    end
+        temperatures = [temperatures, T];
+    else
+        solutions = [solutions, solutions(end)];
+        values = [values, values(end)];
+        temperatures = [temperatures, T];
+end
 end
 end
 
